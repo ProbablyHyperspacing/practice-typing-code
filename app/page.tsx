@@ -39,6 +39,7 @@ export default function Home() {
   const [completedSnippets, setCompletedSnippets] = useState(0); // Track completed snippets in time mode
   const isAutoAdvancing = useRef(false); // Track if we're auto-advancing in time mode
   const [timeModeStats, setTimeModeStats] = useState<any>(null); // Store stats when time runs out
+  const lastNormalLanguageRef = useRef<string>(selectedLanguage); // Remember last normal language
   const [isTimerActive, setIsTimerActive] = useState(false); // Track if timer is running
   const hasProcessedCompletion = useRef(false); // Track if we've processed the current completion
 
@@ -93,6 +94,11 @@ export default function Home() {
   const selectRandomSnippet = useCallback(() => {
     // If using super snippets, select from that data
     if (snippetSource === 'super') {
+      // Save the current normal language before switching to super
+      if (languages[selectedLanguage]) {
+        lastNormalLanguageRef.current = selectedLanguage;
+      }
+
       const superSnippets = (superSnippetsData as any).superSnippets;
       const randomIndex = Math.floor(Math.random() * superSnippets.length);
       const superSnippet = superSnippets[randomIndex];
@@ -110,8 +116,9 @@ export default function Home() {
     }
 
     // Normal snippet selection
-    // If current language doesn't exist in normal languages (e.g., coming from super snippets), reset to javascript
-    const currentLang = languages[selectedLanguage] ? selectedLanguage : 'javascript';
+    // If current language doesn't exist in normal languages (e.g., coming from super snippets),
+    // restore the last normal language we used
+    const currentLang = languages[selectedLanguage] ? selectedLanguage : lastNormalLanguageRef.current;
 
     const snippets = languages[currentLang].snippets;
 
