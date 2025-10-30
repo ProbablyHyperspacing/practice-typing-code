@@ -1,0 +1,1469 @@
+{
+  "languages": {
+    "javascript": {
+      "id": "javascript",
+      "name": "JavaScript",
+      "icon": "\ud83d\udfe8",
+      "color": "#f7df1e",
+      "snippets": [
+        {
+          "id": "js-arrow-1",
+          "code": "const sum = (a, b) => a + b;",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Everywhere in modern JS - callbacks, utilities, React",
+          "usage": "Shorter way to write functions. Great for one-liners",
+          "context": "Automatically returns if no curly braces"
+        },
+        {
+          "id": "js-array-map",
+          "code": "const doubled = nums.map(n => n * 2);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-array-filter",
+          "code": "const evens = nums.filter(n => n % 2 === 0);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-object-destructure",
+          "code": "const { name, age } = user;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-array-destructure",
+          "code": "const [first, ...rest] = items;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-template-literal",
+          "code": "const msg = `Hello, ${name}!`;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-ternary",
+          "code": "const status = isActive ? 'on' : 'off';",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-spread",
+          "code": "const merged = [...arr1, ...arr2];",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-object-spread",
+          "code": "const updated = { ...obj, key: value };",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-array-reduce",
+          "code": "const sum = arr.reduce((a, b) => a + b, 0);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-async-await",
+          "code": "const data = await fetch(url).then(r => r.json());",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Fetching APIs, database queries, reading files",
+          "usage": "Pauses code until a promise resolves without blocking",
+          "context": "Only works inside async functions, not in top-level code"
+        },
+        {
+          "id": "js-optional-chain",
+          "code": "const city = user?.address?.city;",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Reading API responses, nested objects, user profiles",
+          "usage": "Safely accesses nested properties without crashing on null/undefined",
+          "context": "Returns undefined if any part is missing, not an error"
+        },
+        {
+          "id": "js-nullish",
+          "code": "const name = username ?? 'Anonymous';",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Default values, config files, user settings",
+          "usage": "Sets a fallback value only when null or undefined",
+          "context": "Unlike || it keeps 0, false, and empty strings"
+        },
+        {
+          "id": "js-array-find",
+          "code": "const found = items.find(item => item.id === id);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Searching lists, finding user by ID, filtering data",
+          "usage": "Returns the first array element that matches your condition",
+          "context": "Returns undefined if nothing matches, not an error"
+        },
+        {
+          "id": "js-array-some",
+          "code": "const hasEven = nums.some(n => n % 2 === 0);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Validation checks, permission systems, feature flags",
+          "usage": "Returns true if at least one element passes the test",
+          "context": "Stops checking as soon as it finds a match"
+        },
+        {
+          "id": "js-array-every",
+          "code": "const allPositive = nums.every(n => n > 0);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Form validation, data integrity checks, access control",
+          "usage": "Returns true only if every single element passes the test",
+          "context": "Stops checking as soon as one fails"
+        },
+        {
+          "id": "js-for-of",
+          "code": "for (const item of items) {\n  console.log(item);\n}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Looping through arrays, strings, sets, maps",
+          "usage": "Iterates over values in arrays and iterables",
+          "context": "Use for-of for values, for-in for object keys"
+        },
+        {
+          "id": "js-for-in",
+          "code": "for (const key in obj) {\n  console.log(obj[key]);\n}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Iterating over object properties, config objects",
+          "usage": "Loops through object keys (property names)",
+          "context": "Includes inherited properties, use hasOwnProperty to filter"
+        },
+        {
+          "id": "js-switch",
+          "code": "switch (action) {\n  case 'start':\n    return run();\n}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Handling user actions, routing, state machines",
+          "usage": "Tests one value against multiple possible cases",
+          "context": "Cases fall through without break, add default for safety"
+        },
+        {
+          "id": "js-try-catch",
+          "code": "try {\n  await risky();\n} catch (e) {\n  console.error(e);\n}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "API calls, file operations, parsing JSON",
+          "usage": "Catches errors so your app doesn't crash",
+          "context": "Add finally block for cleanup code that always runs"
+        },
+        {
+          "id": "js-event-listener",
+          "code": "button.addEventListener('click', (e) => {\n  e.preventDefault();\n});",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Every interactive website - forms, buttons, menus, modals.",
+          "usage": "Make elements respond when users click, type, or hover.",
+          "context": "First arg is event type, second is callback function."
+        },
+        {
+          "id": "js-set-timeout",
+          "code": "setTimeout(() => {\n  callback();\n}, 1000);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-promise-all",
+          "code": "const results = await Promise.all([\n  fetchUser(),\n  fetchPosts()\n]);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-local-storage",
+          "code": "const saved = JSON.parse(localStorage.getItem('data'));",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-query-selector",
+          "code": "const element = document.querySelector('.active');",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-class-method",
+          "code": "class User {\n  constructor(name) {\n    this.name = name;\n  }\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-export-default",
+          "code": "export default function handleClick() {\n  return true;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-import-named",
+          "code": "import { useState, useEffect } from 'react';",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-object-keys",
+          "code": "const keys = Object.keys(config);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-array-join",
+          "code": "const path = segments.join('/');",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "js-string-split",
+          "code": "const parts = url.split('?')[0];",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Parsing URLs, splitting CSV data, breaking up user input.",
+          "usage": "Splits a string into an array at every occurrence of a separator.",
+          "context": "Returns an array - use [0] to get first part only."
+        },
+        {
+          "id": "js-parse-int",
+          "code": "const num = parseInt(value, 10);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Converting form inputs to numbers, parsing URL params, reading IDs.",
+          "usage": "Converts a string to an integer number.",
+          "context": "Always use 10 as second argument to avoid weird octal bugs."
+        },
+        {
+          "id": "js-math-random",
+          "code": "const id = Math.floor(Math.random() * 1000);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Generating temporary IDs, selecting random items, simple games.",
+          "usage": "Creates a random number between 0 and your max value.",
+          "context": "Not cryptographically secure - don't use for passwords or tokens."
+        },
+        {
+          "id": "js-date-now",
+          "code": "const timestamp = Date.now();",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Measuring performance, creating unique IDs, tracking when events happen.",
+          "usage": "Gets current time as milliseconds since January 1, 1970.",
+          "context": "Returns a number, not a Date object."
+        },
+        {
+          "id": "js-throw-error",
+          "code": "if (!user) throw new Error('User not found');",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Validation functions, API handlers, guarding against bad data.",
+          "usage": "Stops execution immediately and sends error to nearest try/catch.",
+          "context": "Will crash your app if not caught with try/catch."
+        },
+        {
+          "id": "js-default-param",
+          "code": "function greet(name = 'Guest') {\n  return `Hello, ${name}`;\n}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Configuration functions, optional settings, making APIs easier to use.",
+          "usage": "Provides a fallback value when function argument is missing.",
+          "context": "Only uses default if argument is undefined, not if it's null."
+        },
+        {
+          "id": "js-rest-params",
+          "code": "function sum(...numbers) {\n  return numbers.reduce((a, b) => a + b);\n}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Utility functions, loggers, math operations, combining multiple values.",
+          "usage": "Collects all remaining arguments into a single array.",
+          "context": "Must be the last parameter in function signature."
+        },
+        {
+          "id": "js-array-includes",
+          "code": "if (allowedRoles.includes(role)) {\n  return true;\n}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Permission checks, filtering data, validating user input.",
+          "usage": "Checks if array contains a specific value - returns true or false.",
+          "context": "Works with primitives - use .find() for checking objects."
+        },
+        {
+          "id": "js-set-add",
+          "code": "const unique = new Set([1, 2, 2, 3]);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Removing duplicates from arrays, tracking unique users, tags.",
+          "usage": "Creates a collection that only stores unique values automatically.",
+          "context": "Use Array.from(set) or [...set] to convert back to array."
+        },
+        {
+          "id": "js-map-set",
+          "code": "const cache = new Map();\ncache.set(key, value);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Caching API responses, storing user preferences, lookup tables.",
+          "usage": "Like an object but keys can be anything, not just strings.",
+          "context": "Use .get(key) to retrieve, .has(key) to check existence."
+        },
+        {
+          "id": "js-regex-test",
+          "code": "const isEmail = /^[^@]+@[^@]+$/.test(email);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Form validation, parsing logs, checking file extensions.",
+          "usage": "Test if a string matches a pattern without extracting data.",
+          "context": "Returns boolean immediately, no match object needed."
+        },
+        {
+          "id": "js-fetch-post",
+          "code": "fetch('/api/users', {\n  method: 'POST',\n  body: JSON.stringify(data)\n});",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Form submissions, creating resources, sending data to backend APIs.",
+          "usage": "Send JSON data to a server endpoint via HTTP POST.",
+          "context": "Remember to set Content-Type header and handle the promise returned."
+        },
+        {
+          "id": "js-class-extend",
+          "code": "class Admin extends User {\n  constructor(name) {\n    super(name);\n  }\n}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Building role hierarchies, extending component libraries, OOP patterns.",
+          "usage": "Create subclass that inherits methods and properties from parent class.",
+          "context": "Must call super() before using this in constructor."
+        },
+        {
+          "id": "js-object-assign",
+          "code": "const merged = Object.assign({}, defaults, options);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Merging config objects, combining settings, cloning objects shallowly.",
+          "usage": "Copy properties from source objects into target, later sources override earlier.",
+          "context": "Mutates first argument, so pass empty object to avoid side effects."
+        },
+        {
+          "id": "js-array-slice",
+          "code": "const last = items.slice(-3);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Pagination, copying arrays, getting recent items, trimming lists.",
+          "usage": "Extract portion of array without modifying original, negative indexes work.",
+          "context": "Returns new array, unlike splice which mutates original."
+        }
+      ]
+    },
+    "typescript": {
+      "id": "typescript",
+      "name": "TypeScript",
+      "icon": "\ud83d\udd37",
+      "color": "#3178c6",
+      "snippets": [
+        {
+          "id": "ts-interface",
+          "code": "interface User {\n  id: number;\n  name: string;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-type-alias",
+          "code": "type Status = 'pending' | 'success' | 'error';",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-generic",
+          "code": "function identity<T>(arg: T): T {\n  return arg;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-enum",
+          "code": "enum Color {\n  Red = '#FF0000',\n  Blue = '#0000FF'\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-readonly",
+          "code": "interface Point {\n  readonly x: number;\n  readonly y: number;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-optional",
+          "code": "interface Config {\n  port?: number;\n  host?: string;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-union",
+          "code": "type Result = string | number | boolean;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-intersection",
+          "code": "type Combined = User & { role: string };",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-keyof",
+          "code": "type Keys = keyof User;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-typeof",
+          "code": "type UserType = typeof user;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-as-const",
+          "code": "const config = { port: 3000 } as const;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-type-guard",
+          "code": "function isString(val: any): val is string {\n  return typeof val === 'string';\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-mapped-type",
+          "code": "type Readonly<T> = {\n  readonly [K in keyof T]: T[K];\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-conditional",
+          "code": "type IsArray<T> = T extends any[] ? true : false;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-tuple",
+          "code": "type Point3D = [number, number, number];",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-namespace",
+          "code": "namespace Utils {\n  export const VERSION = '1.0.0';\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-declare",
+          "code": "declare global {\n  interface Window {\n    API: any;\n  }\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-abstract",
+          "code": "abstract class Base {\n  abstract getName(): string;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-implements",
+          "code": "class User implements IUser {\n  constructor(public name: string) {}\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-decorator",
+          "code": "@Component()\nclass MyComponent {\n  @Input() title: string;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-async-function",
+          "code": "async function fetchUser(id: string): Promise<User> {\n  return await api.get(`/users/${id}`);\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-utility-pick",
+          "code": "type UserPreview = Pick<User, 'id' | 'name'>;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-utility-omit",
+          "code": "type UserWithoutPassword = Omit<User, 'password'>;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-utility-partial",
+          "code": "type PartialUser = Partial<User>;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-utility-required",
+          "code": "type RequiredConfig = Required<Config>;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-utility-record",
+          "code": "type ErrorMessages = Record<string, string>;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-type-assertion",
+          "code": "const input = document.getElementById('name') as HTMLInputElement;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-non-null-assertion",
+          "code": "const user = users.find(u => u.id === id)!;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-const-enum",
+          "code": "const enum Direction {\n  Up,\n  Down,\n  Left,\n  Right\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-index-signature",
+          "code": "interface StringMap {\n  [key: string]: string;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-generic-constraint",
+          "code": "function getProperty<T, K extends keyof T>(obj: T, key: K) {\n  return obj[key];\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-infer-keyword",
+          "code": "type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-template-literal",
+          "code": "type EventName = `on${Capitalize<string>}`;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-discriminated-union",
+          "code": "type Result = { success: true; data: string } | { success: false; error: Error };",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-function-overload",
+          "code": "function parse(value: string): number;\nfunction parse(value: number): string;\nfunction parse(value: any): any {\n  return value;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-class-private",
+          "code": "class Counter {\n  private count = 0;\n  increment() {\n    this.count++;\n  }\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-getter-setter",
+          "code": "class User {\n  get fullName(): string {\n    return `${this.first} ${this.last}`;\n  }\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-static-method",
+          "code": "class Math {\n  static square(n: number): number {\n    return n * n;\n  }\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-promise-type",
+          "code": "const promise: Promise<User> = fetchUser();",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-array-type",
+          "code": "const numbers: Array<number> = [1, 2, 3];",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-rest-spread",
+          "code": "function combine(...items: string[]): string {\n  return items.join(' ');\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-destructure-type",
+          "code": "const { id, name }: User = await fetchUser();",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-never-type",
+          "code": "function throwError(message: string): never {\n  throw new Error(message);\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ts-unknown-type",
+          "code": "function processValue(value: unknown) {\n  if (typeof value === 'string') {\n    return value.toUpperCase();\n  }\n}",
+          "length": "short",
+          "difficulty": "easy"
+        }
+      ]
+    },
+    "python": {
+      "id": "python",
+      "name": "Python",
+      "icon": "\ud83d\udc0d",
+      "color": "#3776ab",
+      "snippets": [
+        {
+          "id": "py-list-comp",
+          "code": "squares = [x**2 for x in range(10)]",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Data preprocessing scripts, ETL pipelines, transforming database query results",
+          "usage": "Fast in-memory transformations when you need a new list with modified values",
+          "context": "Slower than generator expressions for large datasets. Don't use if you need lazy evaluation or infinite sequences"
+        },
+        {
+          "id": "py-dict-comp",
+          "code": "pairs = {x: x**2 for x in range(5)}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Building lookup tables, inverting dictionaries, parsing config files into key-value mappings",
+          "usage": "Creating dictionaries from iterables without explicit loops, common in data normalization",
+          "context": "Duplicate keys will silently overwrite earlier values. For complex logic, use regular loops for clarity"
+        },
+        {
+          "id": "py-lambda",
+          "code": "double = lambda x: x * 2",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Pandas dataframe operations, sorting with custom keys, UI callback definitions",
+          "usage": "Quick throwaway functions for map/filter/sort without polluting namespace with def",
+          "context": "Can't contain statements or annotations. PEP 8 recommends regular functions if you're assigning to a variable anyway"
+        },
+        {
+          "id": "py-map",
+          "code": "doubled = list(map(lambda x: x * 2, nums))",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Legacy Python 2 codebases, functional programming patterns, batch processing scripts",
+          "usage": "Apply function to every item in an iterable, returns iterator in Python 3",
+          "context": "List comprehensions are more Pythonic and readable. map() without list() returns lazy iterator that's consumed once"
+        },
+        {
+          "id": "py-filter",
+          "code": "evens = list(filter(lambda x: x % 2 == 0, nums))",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Data cleaning pipelines, removing None values from lists, validation in APIs",
+          "usage": "Extract elements matching a condition without explicit loops",
+          "context": "List comprehensions with if clauses are preferred in modern Python. filter(None, lst) is a neat trick to remove falsy values"
+        },
+        {
+          "id": "py-f-string",
+          "code": "msg = f'Hello, {name}!'",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-with",
+          "code": "with open('file.txt', 'r') as f:\n    data = f.read()",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-enumerate",
+          "code": "for i, item in enumerate(items):\n    print(i, item)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-zip",
+          "code": "for a, b in zip(list1, list2):\n    print(a, b)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-slice",
+          "code": "first_three = items[:3]\nlast_two = items[-2:]",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-unpacking",
+          "code": "first, *middle, last = items",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-ternary",
+          "code": "status = 'even' if num % 2 == 0 else 'odd'",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-any-all",
+          "code": "has_even = any(x % 2 == 0 for x in nums)\nall_positive = all(x > 0 for x in nums)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-decorator",
+          "code": "@property\ndef name(self):\n    return self._name",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-class",
+          "code": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-dataclass",
+          "code": "@dataclass\nclass User:\n    name: str\n    age: int",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-try-except",
+          "code": "try:\n    risky_operation()\nexcept Exception as e:\n    print(e)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-yield",
+          "code": "def gen():\n    for i in range(10):\n        yield i * 2",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-async",
+          "code": "async def fetch_data():\n    return await api_call()",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-walrus",
+          "code": "if (n := len(items)) > 10:\n    print(f'Too many items: {n}')",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-requests",
+          "code": "import requests\nresponse = requests.get('https://api.example.com/data')\ndata = response.json()",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-json-load",
+          "code": "import json\nwith open('config.json') as f:\n    config = json.load(f)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-json-dumps",
+          "code": "import json\njson_string = json.dumps(data, indent=2)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-pathlib",
+          "code": "from pathlib import Path\npath = Path('data') / 'file.txt'",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-datetime-now",
+          "code": "from datetime import datetime\nnow = datetime.now()",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-datetime-format",
+          "code": "formatted = datetime.now().strftime('%Y-%m-%d')",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-set-operations",
+          "code": "unique = set(items)\nintersection = set1 & set2",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-defaultdict",
+          "code": "from collections import defaultdict\ncounts = defaultdict(int)\ncounts['key'] += 1",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-counter",
+          "code": "from collections import Counter\ncounts = Counter(words)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-namedtuple",
+          "code": "from collections import namedtuple\nPoint = namedtuple('Point', ['x', 'y'])",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-re-search",
+          "code": "import re\nmatch = re.search(r'\\d+', text)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-re-findall",
+          "code": "import re\nnumbers = re.findall(r'\\d+', text)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-os-path",
+          "code": "import os\nif os.path.exists('file.txt'):\n    os.remove('file.txt')",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-env-var",
+          "code": "import os\napi_key = os.getenv('API_KEY', 'default')",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-args-kwargs",
+          "code": "def process(*args, **kwargs):\n    return len(args) + len(kwargs)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-decorator-simple",
+          "code": "def logger(func):\n    def wrapper(*args):\n        print(f'Calling {func.__name__}')\n        return func(*args)\n    return wrapper",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-class-init",
+          "code": "class Database:\n    def __init__(self, host):\n        self.host = host\n        self.connection = None",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-property",
+          "code": "class Circle:\n    @property\n    def area(self):\n        return 3.14 * self.radius ** 2",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-staticmethod",
+          "code": "class Math:\n    @staticmethod\n    def add(a, b):\n        return a + b",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-classmethod",
+          "code": "class User:\n    @classmethod\n    def from_dict(cls, data):\n        return cls(**data)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-context-manager",
+          "code": "class Timer:\n    def __enter__(self):\n        self.start = time.time()\n    def __exit__(self, *args):\n        print(time.time() - self.start)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-any-all",
+          "code": "has_even = any(x % 2 == 0 for x in nums)\nall_positive = all(x > 0 for x in nums)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-sorted-key",
+          "code": "sorted_users = sorted(users, key=lambda u: u['name'])",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "py-isinstance",
+          "code": "if isinstance(value, (int, float)):\n    return value * 2",
+          "length": "short",
+          "difficulty": "easy"
+        }
+      ]
+    },
+    "react": {
+      "id": "react",
+      "name": "React",
+      "icon": "\u269b\ufe0f",
+      "color": "#61dafb",
+      "snippets": [
+        {
+          "id": "react-useState",
+          "code": "const [count, setCount] = useState(0);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Every React component that needs to track changing values.",
+          "usage": "Store component state that re-renders UI when updated.",
+          "context": "Setter function replaces state, doesn't merge like class setState."
+        },
+        {
+          "id": "react-useEffect",
+          "code": "useEffect(() => {\n  fetchData();\n}, [id]);",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Fetching data, subscribing to events, syncing with external systems.",
+          "usage": "Run side effects after render, cleanup on unmount or re-run.",
+          "context": "Dependency array controls when effect runs, empty array runs once."
+        },
+        {
+          "id": "react-component",
+          "code": "function Button({ onClick, children }) {\n  return <button onClick={onClick}>{children}</button>;\n}",
+          "length": "short",
+          "difficulty": "easy",
+          "encounter": "Building every UI piece from buttons to entire page sections.",
+          "usage": "Define reusable pieces of UI that accept props and return JSX.",
+          "context": "Function components are modern standard, class components are legacy."
+        },
+        {
+          "id": "react-map",
+          "code": "{items.map(item => (\n  <li key={item.id}>{item.name}</li>\n))}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-conditional",
+          "code": "{isLoading ? <Spinner /> : <Content />}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-fragment",
+          "code": "<>\n  <Header />\n  <Main />\n</>",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-props",
+          "code": "<Card title={title} onClick={handleClick} />",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-useRef",
+          "code": "const inputRef = useRef(null);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-useCallback",
+          "code": "const handleClick = useCallback(() => {\n  doSomething(id);\n}, [id]);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-useMemo",
+          "code": "const sorted = useMemo(() => {\n  return items.sort();\n}, [items]);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-context",
+          "code": "const theme = useContext(ThemeContext);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-reducer",
+          "code": "const [state, dispatch] = useReducer(reducer, initialState);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-custom-hook",
+          "code": "function useCounter() {\n  const [count, setCount] = useState(0);\n  return { count, setCount };\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-event",
+          "code": "const handleSubmit = (e) => {\n  e.preventDefault();\n  submitForm();\n};",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-style",
+          "code": "<div style={{ display: 'flex', gap: '1rem' }}>",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-className",
+          "code": "<div className={`card ${isActive ? 'active' : ''}`}>",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-children",
+          "code": "function Layout({ children }) {\n  return <div className=\"layout\">{children}</div>;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-forward-ref",
+          "code": "const Input = forwardRef((props, ref) => {\n  return <input ref={ref} {...props} />;\n});",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-portal",
+          "code": "createPortal(\n  <Modal />,\n  document.getElementById('modal-root')\n)",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-lazy",
+          "code": "const LazyComponent = lazy(() => import('./Component'));",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-form-controlled",
+          "code": "const [email, setEmail] = useState('');\n\n<input\n  value={email}\n  onChange={(e) => setEmail(e.target.value)}\n/>",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-fetch-data",
+          "code": "const [data, setData] = useState(null);\nconst [loading, setLoading] = useState(true);\n\nuseEffect(() => {\n  fetch('/api/users')\n    .then(res => res.json())\n    .then(setData)\n    .finally(() => setLoading(false));\n}, []);",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-custom-hook",
+          "code": "function useLocalStorage(key, initialValue) {\n  const [value, setValue] = useState(() => {\n    return localStorage.getItem(key) || initialValue;\n  });\n\n  useEffect(() => {\n    localStorage.setItem(key, value);\n  }, [key, value]);\n\n  return [value, setValue];\n}",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-context-provider",
+          "code": "const ThemeContext = createContext();\n\nfunction ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('light');\n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-use-context",
+          "code": "const { theme, setTheme } = useContext(ThemeContext);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-conditional-render",
+          "code": "{loading ? (\n  <Spinner />\n) : error ? (\n  <Error message={error} />\n) : (\n  <DataTable data={data} />\n)}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-event-handler",
+          "code": "const handleSubmit = (e) => {\n  e.preventDefault();\n  const formData = new FormData(e.target);\n  onSubmit(Object.fromEntries(formData));\n};",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-use-callback",
+          "code": "const handleClick = useCallback(() => {\n  console.log('Clicked:', id);\n}, [id]);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-use-memo",
+          "code": "const filteredList = useMemo(() => {\n  return items.filter(item => \n    item.name.toLowerCase().includes(search.toLowerCase())\n  );\n}, [items, search]);",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-use-ref-dom",
+          "code": "const inputRef = useRef(null);\n\nuseEffect(() => {\n  inputRef.current?.focus();\n}, []);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-use-debounce",
+          "code": "function useDebounce(value, delay) {\n  const [debounced, setDebounced] = useState(value);\n\n  useEffect(() => {\n    const timer = setTimeout(() => setDebounced(value), delay);\n    return () => clearTimeout(timer);\n  }, [value, delay]);\n\n  return debounced;\n}",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-error-boundary",
+          "code": "class ErrorBoundary extends Component {\n  state = { hasError: false };\n\n  static getDerivedStateFromError(error) {\n    return { hasError: true };\n  }\n\n  render() {\n    if (this.state.hasError) return <ErrorFallback />;\n    return this.props.children;\n  }\n}",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-reducer",
+          "code": "const [state, dispatch] = useReducer((state, action) => {\n  switch (action.type) {\n    case 'increment':\n      return { count: state.count + 1 };\n    case 'decrement':\n      return { count: state.count - 1 };\n    default:\n      return state;\n  }\n}, { count: 0 });",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-map-list",
+          "code": "{users.map(user => (\n  <UserCard key={user.id} user={user} />\n))}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-async-effect",
+          "code": "useEffect(() => {\n  let cancelled = false;\n\n  async function fetchData() {\n    const result = await api.getData();\n    if (!cancelled) setData(result);\n  }\n\n  fetchData();\n  return () => { cancelled = true; };\n}, []);",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-memo-component",
+          "code": "const MemoizedComponent = memo(({ data }) => {\n  return <div>{data.value}</div>;\n});",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-dynamic-import",
+          "code": "const [Component, setComponent] = useState(null);\n\nuseEffect(() => {\n  import('./DynamicComponent').then(mod => {\n    setComponent(() => mod.default);\n  });\n}, []);",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-form-validation",
+          "code": "const [errors, setErrors] = useState({});\n\nconst validate = () => {\n  const newErrors = {};\n  if (!email.includes('@')) newErrors.email = 'Invalid email';\n  if (password.length < 8) newErrors.password = 'Too short';\n  setErrors(newErrors);\n  return Object.keys(newErrors).length === 0;\n};",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-previous-value",
+          "code": "function usePrevious(value) {\n  const ref = useRef();\n  useEffect(() => {\n    ref.current = value;\n  });\n  return ref.current;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-window-size",
+          "code": "function useWindowSize() {\n  const [size, setSize] = useState({\n    width: window.innerWidth,\n    height: window.innerHeight\n  });\n\n  useEffect(() => {\n    const handleResize = () => setSize({\n      width: window.innerWidth,\n      height: window.innerHeight\n    });\n    window.addEventListener('resize', handleResize);\n    return () => window.removeEventListener('resize', handleResize);\n  }, []);\n\n  return size;\n}",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-suspense",
+          "code": "<Suspense fallback={<Loading />}>\n  <LazyComponent />\n</Suspense>",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-imperative-handle",
+          "code": "const Input = forwardRef((props, ref) => {\n  const inputRef = useRef();\n\n  useImperativeHandle(ref, () => ({\n    focus: () => inputRef.current.focus(),\n    clear: () => { inputRef.current.value = ''; }\n  }));\n\n  return <input ref={inputRef} {...props} />;\n});",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "react-layout-effect",
+          "code": "useLayoutEffect(() => {\n  const rect = divRef.current.getBoundingClientRect();\n  setPosition({ x: rect.left, y: rect.top });\n}, []);",
+          "length": "short",
+          "difficulty": "easy"
+        }
+      ]
+    },
+    "rust": {
+      "id": "rust",
+      "name": "Rust",
+      "icon": "\ud83e\udd80",
+      "color": "#dea584",
+      "snippets": [
+        {
+          "id": "rust-let",
+          "code": "let mut count = 0;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-fn",
+          "code": "fn add(a: i32, b: i32) -> i32 {\n    a + b\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-match",
+          "code": "match value {\n    Some(x) => x,\n    None => 0,\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-vec",
+          "code": "let nums: Vec<i32> = vec![1, 2, 3, 4, 5];",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-iter",
+          "code": "let doubled: Vec<_> = nums.iter().map(|x| x * 2).collect();",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-struct",
+          "code": "struct Point {\n    x: f64,\n    y: f64,\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-impl",
+          "code": "impl Point {\n    fn new(x: f64, y: f64) -> Self {\n        Self { x, y }\n    }\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-enum",
+          "code": "enum Status {\n    Active,\n    Inactive,\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-option",
+          "code": "let result: Option<i32> = Some(42);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-result",
+          "code": "let result: Result<i32, String> = Ok(42);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-if-let",
+          "code": "if let Some(value) = optional {\n    println!(\"{}\", value);\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-unwrap",
+          "code": "let value = result.unwrap_or_default();",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-closure",
+          "code": "let add = |a, b| a + b;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-trait",
+          "code": "trait Display {\n    fn fmt(&self) -> String;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-derive",
+          "code": "#[derive(Debug, Clone, PartialEq)]\nstruct User {\n    name: String,\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-lifetime",
+          "code": "fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {\n    x\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-box",
+          "code": "let boxed: Box<i32> = Box::new(42);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-arc",
+          "code": "use std::sync::Arc;\nlet shared = Arc::new(data);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-async",
+          "code": "async fn fetch_data() -> Result<String, Error> {\n    Ok(String::new())\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-macro",
+          "code": "macro_rules! say_hello {\n    () => { println!(\"Hello!\"); };\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-fs-read",
+          "code": "use std::fs;\n\nlet contents = fs::read_to_string(\"data.txt\")?;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-error-handling",
+          "code": "fn read_file(path: &str) -> Result<String, std::io::Error> {\n    let contents = std::fs::read_to_string(path)?;\n    Ok(contents)\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-hashmap",
+          "code": "use std::collections::HashMap;\n\nlet mut scores = HashMap::new();\nscores.insert(\"Blue\", 10);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-filter-map",
+          "code": "let nums: Vec<i32> = vec![1, 2, 3, 4];\nlet evens: Vec<_> = nums.into_iter()\n    .filter(|&x| x % 2 == 0)\n    .collect();",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-string-parse",
+          "code": "let num: i32 = \"42\".parse()?;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-from-trait",
+          "code": "impl From<i32> for MyType {\n    fn from(value: i32) -> Self {\n        MyType { value }\n    }\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-thread-spawn",
+          "code": "use std::thread;\n\nlet handle = thread::spawn(|| {\n    println!(\"Hello from thread!\");\n});\nhandle.join().unwrap();",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-mutex",
+          "code": "use std::sync::Mutex;\n\nlet counter = Mutex::new(0);\nlet mut num = counter.lock().unwrap();\n*num += 1;",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-channel",
+          "code": "use std::sync::mpsc;\n\nlet (tx, rx) = mpsc::channel();\ntx.send(42).unwrap();\nlet received = rx.recv().unwrap();",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-impl-trait",
+          "code": "fn get_iterator() -> impl Iterator<Item = i32> {\n    vec![1, 2, 3].into_iter()\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-generic-struct",
+          "code": "struct Container<T> {\n    value: T,\n}\n\nimpl<T> Container<T> {\n    fn new(value: T) -> Self {\n        Self { value }\n    }\n}",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-where-clause",
+          "code": "fn print_it<T>(item: T)\nwhere\n    T: std::fmt::Display,\n{\n    println!(\"{}\", item);\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-deref",
+          "code": "use std::ops::Deref;\n\nimpl Deref for MyBox<T> {\n    type Target = T;\n\n    fn deref(&self) -> &Self::Target {\n        &self.0\n    }\n}",
+          "length": "medium",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-option-map",
+          "code": "let value = Some(5);\nlet doubled = value.map(|x| x * 2);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-result-and-then",
+          "code": "let result = parse_num(\"42\")\n    .and_then(|n| Ok(n * 2));",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-pathbuf",
+          "code": "use std::path::PathBuf;\n\nlet mut path = PathBuf::from(\"/tmp\");\npath.push(\"file.txt\");",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-serialize",
+          "code": "use serde::{Serialize, Deserialize};\n\n#[derive(Serialize, Deserialize)]\nstruct User {\n    name: String,\n    age: u32,\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-tokio-async",
+          "code": "#[tokio::main]\nasync fn main() {\n    let result = fetch_data().await;\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-pattern-matching",
+          "code": "match response {\n    Ok(data) => process(data),\n    Err(e) => eprintln!(\"Error: {}\", e),\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-iterator-chain",
+          "code": "let result: Vec<_> = data.iter()\n    .filter(|x| x.is_valid())\n    .map(|x| x.value)\n    .collect();",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-cow",
+          "code": "use std::borrow::Cow;\n\nfn process(s: Cow<str>) -> String {\n    s.into_owned()\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-range",
+          "code": "for i in 0..10 {\n    println!(\"{}\", i);\n}",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-unwrap-or",
+          "code": "let value = config.get(\"timeout\")\n    .unwrap_or(&30);",
+          "length": "short",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rust-format-macro",
+          "code": "let message = format!(\"Hello, {}!\", name);",
+          "length": "short",
+          "difficulty": "easy"
+        }
+      ]
+    }
+  }
+}

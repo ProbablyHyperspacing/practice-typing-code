@@ -1,0 +1,79 @@
+'use client';
+
+import { X, Settings } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
+import LanguageIcon from './LanguageIcon';
+
+interface NavbarProps {
+  // For home page
+  currentLanguage?: string;
+  languageColor?: string;
+  languageName?: string;
+  onSettingsClick?: () => void;
+
+  // For settings/stats pages
+  onClose?: () => void;
+}
+
+export default function Navbar({
+  currentLanguage,
+  languageColor,
+  languageName,
+  onSettingsClick,
+  onClose,
+}: NavbarProps) {
+  return (
+    <header className="py-4 px-4">
+      <div className="max-w-4xl mx-auto">
+        <nav className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-full px-6 py-3 flex items-center justify-between border border-text-light-secondary/10 dark:border-text-secondary/10">
+          {/* Logo/Name */}
+          <div className="flex items-center">
+            <h1 className="text-xl font-display font-black tracking-tight">
+              <span className="text-gradient">Practice Typing Code</span>
+            </h1>
+          </div>
+
+          {/* Right side controls */}
+          <div className="flex items-center gap-3">
+            {/* Current Language - only on home page */}
+            {currentLanguage && (
+              <div className="flex items-center gap-2">
+                <span
+                  className="font-display font-bold text-text-light-primary dark:text-text-primary flex items-center gap-2"
+                  style={{ color: languageColor }}
+                >
+                  <LanguageIcon language={currentLanguage} size={20} />
+                  <span className="text-sm uppercase tracking-wide">{languageName}</span>
+                </span>
+              </div>
+            )}
+
+            <ThemeToggle />
+
+            {/* Settings button - only on home page */}
+            {onSettingsClick && (
+              <button
+                onClick={onSettingsClick}
+                className="p-2 rounded-full hover:bg-bg-light-primary/20 dark:hover:bg-bg-primary/20 transition-colors duration-200"
+                aria-label="Open settings"
+              >
+                <Settings className="w-5 h-5 text-text-light-primary dark:text-text-primary" />
+              </button>
+            )}
+
+            {/* Close button - only on settings/stats pages */}
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="p-2 rounded-full hover:bg-bg-light-primary/20 dark:hover:bg-bg-primary/20 transition-colors duration-200"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5 text-text-light-primary dark:text-text-primary" />
+              </button>
+            )}
+          </div>
+        </nav>
+      </div>
+    </header>
+  );
+}

@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-primary: #f5f7f6;
+    --color-bg-secondary: #fdfffe;
+    --color-text-primary: #3a4442;
+    --color-text-secondary: #7a8a88;
+    --color-accent: #4FC3A8;
+  }
+
+  :root.dark {
+    --color-bg-primary: #1e1e1e;
+    --color-bg-secondary: #2c2c2c;
+    --color-text-primary: #e4e4e4;
+    --color-text-secondary: #646464;
+    --color-accent: #5ED4B8;
+  }
+
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-bg-light-primary dark:bg-bg-primary text-text-light-primary dark:text-text-primary font-sans;
+    @apply transition-colors duration-200;
+  }
+
+  ::selection {
+    @apply bg-accent-light-primary/20 dark:bg-accent-primary/20 text-accent-light-primary dark:text-accent-primary;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-light-secondary dark:bg-bg-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-accent-light-secondary dark:bg-accent-secondary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent-light-primary dark:bg-accent-primary;
+  }
+}
+
+@layer components {
+  .typing-text {
+    @apply font-mono text-2xl leading-relaxed tracking-wider;
+  }
+
+  .char-correct {
+    @apply text-text-light-primary dark:text-text-primary font-semibold;
+  }
+
+  .char-incorrect {
+    @apply text-incorrect-light dark:text-incorrect bg-incorrect-light/20 dark:bg-incorrect/20 rounded px-0.5;
+  }
+
+  .char-current {
+    @apply relative;
+  }
+
+  .char-current::before {
+    content: '';
+    @apply absolute left-0 top-0 bottom-0 w-1 bg-accent-light-primary dark:bg-accent-primary animate-pulse rounded-full;
+  }
+
+  .char-untyped {
+    @apply text-text-light-secondary/60 dark:text-text-secondary/60;
+  }
+
+  .button-primary {
+    @apply px-8 py-4 bg-accent-light-primary dark:bg-accent-primary text-white dark:text-bg-primary font-display font-black uppercase tracking-wider rounded-xl text-lg;
+    @apply hover:bg-accent-light-primary/80 dark:hover:bg-accent-primary/90 transition-all duration-200;
+    @apply active:scale-95 shadow-lg hover:shadow-xl;
+  }
+
+  .button-secondary {
+    @apply px-8 py-4 bg-bg-light-secondary dark:bg-bg-secondary text-text-light-primary dark:text-text-primary font-display font-black uppercase tracking-wider rounded-xl text-lg;
+    @apply hover:bg-accent-light-secondary/30 dark:hover:bg-accent-secondary/30 transition-all duration-200;
+    @apply active:scale-95 border-2 border-accent-light-secondary/40 dark:border-accent-secondary/40;
+  }
+
+  .language-pill {
+    @apply px-4 py-2 bg-bg-light-secondary dark:bg-bg-secondary rounded-full text-sm font-medium;
+    @apply hover:bg-accent-light-secondary/20 dark:hover:bg-accent-secondary/20 transition-all duration-200 cursor-pointer;
+    @apply border border-transparent;
+  }
+
+  .language-pill-active {
+    @apply bg-accent-light-primary dark:bg-accent-primary text-white dark:text-bg-primary;
+    @apply hover:bg-accent-light-primary/90 dark:hover:bg-accent-primary/90;
+  }
+}
+
+@layer utilities {
+  .glow {
+    filter: drop-shadow(0 0 20px rgba(226, 183, 20, 0.3));
+  }
+
+  .text-gradient {
+    @apply text-accent-light-primary dark:text-accent-primary;
+  }
+
+  /* Typing cursor for syntax highlighter */
+  .typing-cursor {
+    @apply relative;
+  }
+
+  .typing-cursor::before {
+    content: '';
+    @apply absolute left-0 top-0 bottom-0 w-0.5 bg-yellow-400;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+}

