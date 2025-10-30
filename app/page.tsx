@@ -151,11 +151,18 @@ export default function Home() {
     setCurrentSnippet(filteredSnippets[randomIndex]);
   }, [selectedLanguage, languages, typingMode, errorPatterns, snippetSource]);
 
-  // Handle snippet source changes
+  // Initialize timeRemaining when in time mode (only if it's null, not if it's 0)
+  useEffect(() => {
+    if (typingMode === 'time' && timeRemaining === null && !showStats) {
+      setTimeRemaining(timeLimit);
+    }
+  }, [typingMode, timeLimit, timeRemaining, showStats]); // React to mode and limit changes
+
+  // Handle snippet source and language changes
   useEffect(() => {
     selectRandomSnippet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [snippetSource]); // Trigger only on source change
+  }, [snippetSource, selectedLanguage]); // Trigger when source or language changes
 
   // Reset typing state when snippet changes (except during time mode auto-advance)
   useEffect(() => {
@@ -201,28 +208,26 @@ export default function Home() {
 
   // Timer for time-based mode
   useEffect(() => {
-    if (typingMode === 'time' && startTime && !isTimerActive) {
+    // Only start timer if:
+    // 1. We're in time mode
+    // 2. User has started typing
+    // 3. Timer is not already active
+    // 4. Time remaining equals time limit (indicating fresh start)
+    if (typingMode === 'time' && startTime && !isTimerActive && timeRemaining === timeLimit) {
       // Start the timer only once when typing begins
       setIsTimerActive(true);
-      setTimeRemaining(timeLimit);
       timerRef.current = setInterval(() => {
         setTimeRemaining(prev => {
           if (prev !== null && prev > 0) {
             const newTime = prev - 1;
             if (newTime === 0) {
-              // Time's up, calculate final stats and show them
-              const finalStats = getCurrentStats();
-              if (finalStats) {
-                setTimeModeStats(finalStats);
-              }
-              setShowStats(true);
+              // Time's up - just stop the timer
+              // Stats calculation is handled in the useEffect below
               setIsTimerActive(false);
               if (timerRef.current) {
                 clearInterval(timerRef.current);
                 timerRef.current = null;
               }
-              // Reset typing state to prevent timer from auto-starting
-              reset();
             }
             return newTime;
           }
@@ -240,7 +245,7 @@ export default function Home() {
         }
       }
     };
-  }, [typingMode, startTime, timeLimit, getCurrentStats, isTimerActive]);
+  }, [typingMode, startTime, timeLimit, isTimerActive, timeRemaining]);
 
   // Show stats page when complete (training mode) or time's up (time mode)
   useEffect(() => {
@@ -297,7 +302,9 @@ export default function Home() {
           isAutoAdvancing.current = false;
         }, 100);
       }, 200);
-    } else if (typingMode === 'time' && timeRemaining === 0) {
+    } else if (typingMode === 'time' && timeRemaining === 0 && !hasProcessedCompletion.current) {
+      hasProcessedCompletion.current = true;
+
       // Time's up - calculate final cumulative stats
       const currentStats = getCurrentStats();
       if (currentStats && startTime) {
@@ -320,6 +327,8 @@ export default function Home() {
 
         setTimeModeStats(finalStats);
         setShowStats(true);
+        // Reset typing state to prevent timer from auto-starting when user closes stats
+        reset();
       }
     }
 
@@ -349,7 +358,15 @@ export default function Home() {
 
   const handleNext = () => {
     setShowStats(false);
+    // In time mode, reset timer state for a fresh start
+    if (typingMode === 'time') {
+      setTimeRemaining(timeLimit);
+      setCompletedSnippets(0);
+      setTimeModeStats(null);
+      cumulativeStatsRef.current = { correctChars: 0, incorrectChars: 0 };
+    }
     selectRandomSnippet();
+    reset();
   };
 
   const handleNewSnippet = () => {
