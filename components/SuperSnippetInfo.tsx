@@ -8,7 +8,14 @@ interface SuperSnippetInfoProps {
 
 export default function SuperSnippetInfo({ story, description, impact }: SuperSnippetInfoProps) {
   return (
-    <div className="fixed left-32 top-20 mt-20 w-64 space-y-6 pointer-events-none" style={{ paddingTop: '1.375rem' }}>
+    <div
+      className="fixed top-20 mt-20 space-y-4 lg:space-y-6 pointer-events-none"
+      style={{
+        paddingTop: '1.375rem',
+        left: 'clamp(0.5rem, 2vw, 8rem)',
+        width: 'clamp(10rem, 15vw, 16rem)'
+      }}
+    >
       {/* Story */}
       <div className="space-y-2">
         <h3 className="text-xs font-medium uppercase tracking-wider text-text-light-secondary dark:text-text-secondary opacity-50">
