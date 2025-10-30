@@ -21,114 +21,99 @@ export default function StatsView({ stats, onRetry, onNext, completedSnippets, m
 
       {/* Main Content */}
       <main className="flex-1 px-4 pb-8">
-        <div className="max-w-4xl mx-auto mt-20">
+        <div className="max-w-3xl mx-auto mt-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="space-y-6"
+            className="space-y-8"
           >
-            {/* Primary Stats Row */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* Main Stats Table */}
+            <div className="space-y-3">
               {/* WPM */}
-              <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
-                <div className="text-sm font-body font-bold text-text-light-secondary dark:text-text-secondary uppercase tracking-widest mb-2">
+              <div className="flex items-baseline justify-between border-b border-text-light-secondary/20 dark:border-text-secondary/20 pb-3">
+                <span className="text-sm uppercase tracking-wider text-text-light-secondary dark:text-text-secondary font-medium">
                   Words Per Minute
-                </div>
-                <div className="text-5xl font-display font-black text-accent-light-primary dark:text-accent-primary">
+                </span>
+                <span className="text-6xl font-display font-black text-accent-light-primary dark:text-accent-primary tabular-nums">
                   {stats.wpm}
-                </div>
+                </span>
               </div>
 
-              {/* Snippets Completed - Only for Time Mode */}
-              {mode === 'time' && completedSnippets !== undefined ? (
-                <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
-                  <div className="text-sm font-body font-bold text-text-light-secondary dark:text-text-secondary uppercase tracking-widest mb-2">
+              {/* Snippets Completed (time mode only) */}
+              {mode === 'time' && completedSnippets !== undefined && (
+                <div className="flex items-baseline justify-between border-b border-text-light-secondary/20 dark:border-text-secondary/20 pb-3">
+                  <span className="text-sm uppercase tracking-wider text-text-light-secondary dark:text-text-secondary font-medium">
                     Snippets Completed
-                  </div>
-                  <div className="text-5xl font-display font-black text-accent-light-primary dark:text-accent-primary">
+                  </span>
+                  <span className="text-5xl font-display font-black text-accent-light-primary dark:text-accent-primary tabular-nums">
                     {completedSnippets}
-                  </div>
-                </div>
-              ) : (
-                <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
-                  <div className="text-sm font-body font-bold text-text-light-secondary dark:text-text-secondary uppercase tracking-widest mb-2">
-                    Time
-                  </div>
-                  <div className="text-5xl font-display font-black text-text-light-primary dark:text-text-primary">
-                    {formatTime(Math.floor(stats.time))}
-                  </div>
+                  </span>
                 </div>
               )}
-            </div>
 
-            {/* Secondary Stats Row */}
-            <div className="grid grid-cols-3 gap-4">
               {/* Accuracy */}
-              <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
-                <div className="text-sm font-body font-bold text-text-light-secondary dark:text-text-secondary uppercase tracking-widest mb-2">
+              <div className="flex items-baseline justify-between border-b border-text-light-secondary/20 dark:border-text-secondary/20 pb-3">
+                <span className="text-sm uppercase tracking-wider text-text-light-secondary dark:text-text-secondary font-medium">
                   Accuracy
-                </div>
-                <div className={`text-4xl font-display font-black ${
+                </span>
+                <span className={`text-5xl font-display font-black tabular-nums ${
                   stats.accuracy >= 95 ? 'text-correct-light dark:text-correct' :
                   stats.accuracy >= 80 ? 'text-accent-light-primary dark:text-accent-primary' :
                   'text-incorrect-light dark:text-incorrect'
                 }`}>
                   {stats.accuracy}%
-                </div>
+                </span>
               </div>
 
-              {/* Time (only show if not in time mode) */}
-              {mode === 'time' ? (
-                <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
-                  <div className="text-sm font-body font-bold text-text-light-secondary dark:text-text-secondary uppercase tracking-widest mb-2">
-                    Time
-                  </div>
-                  <div className="text-4xl font-display font-black text-text-light-primary dark:text-text-primary">
-                    {formatTime(Math.floor(stats.time))}
-                  </div>
-                </div>
-              ) : null}
+              {/* Time */}
+              <div className="flex items-baseline justify-between border-b border-text-light-secondary/20 dark:border-text-secondary/20 pb-3">
+                <span className="text-sm uppercase tracking-wider text-text-light-secondary dark:text-text-secondary font-medium">
+                  Time
+                </span>
+                <span className="text-5xl font-display font-black text-text-light-primary dark:text-text-primary tabular-nums">
+                  {formatTime(Math.floor(stats.time))}
+                </span>
+              </div>
 
               {/* Characters */}
-              <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
-                <div className="text-sm font-body font-bold text-text-light-secondary dark:text-text-secondary uppercase tracking-widest mb-2">
-                  Characters
-                </div>
-                <div className="text-4xl font-display font-black text-text-light-primary dark:text-text-primary">
+              <div className="flex items-baseline justify-between border-b border-text-light-secondary/20 dark:border-text-secondary/20 pb-3">
+                <span className="text-sm uppercase tracking-wider text-text-light-secondary dark:text-text-secondary font-medium">
+                  Total Characters
+                </span>
+                <span className="text-5xl font-display font-black text-text-light-primary dark:text-text-primary tabular-nums">
                   {stats.totalChars}
-                </div>
+                </span>
+              </div>
+
+              {/* Correct Characters */}
+              <div className="flex items-baseline justify-between border-b border-text-light-secondary/20 dark:border-text-secondary/20 pb-3">
+                <span className="text-sm uppercase tracking-wider text-text-light-secondary dark:text-text-secondary font-medium">
+                  Correct Characters
+                </span>
+                <span className="text-5xl font-display font-black text-correct-light dark:text-correct tabular-nums">
+                  {stats.correctChars}
+                </span>
+              </div>
+
+              {/* Incorrect Characters */}
+              <div className="flex items-baseline justify-between border-b border-text-light-secondary/20 dark:border-text-secondary/20 pb-3">
+                <span className="text-sm uppercase tracking-wider text-text-light-secondary dark:text-text-secondary font-medium">
+                  Incorrect Characters
+                </span>
+                <span className="text-5xl font-display font-black text-incorrect-light dark:text-incorrect tabular-nums">
+                  {stats.incorrectChars}
+                </span>
               </div>
 
               {/* Average Speed */}
-              <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
-                <div className="text-sm font-body font-bold text-text-light-secondary dark:text-text-secondary uppercase tracking-widest mb-2">
-                  Avg Speed
-                </div>
-                <div className="text-4xl font-display font-black text-text-light-primary dark:text-text-primary">
+              <div className="flex items-baseline justify-between pb-3">
+                <span className="text-sm uppercase tracking-wider text-text-light-secondary dark:text-text-secondary font-medium">
+                  Average Speed
+                </span>
+                <div className="text-5xl font-display font-black text-text-light-primary dark:text-text-primary tabular-nums">
                   {Math.round(stats.correctChars / stats.time)}
-                  <span className="text-xl text-text-light-secondary dark:text-text-secondary ml-1">c/s</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Detailed Breakdown */}
-            <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
-              <h2 className="text-lg font-display font-black uppercase tracking-wide text-text-light-primary dark:text-text-primary mb-4">
-                Breakdown
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-text-light-secondary dark:text-text-secondary">Correct Characters</span>
-                  <span className="font-mono text-lg text-correct-light dark:text-correct font-bold">
-                    {stats.correctChars}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-text-light-secondary dark:text-text-secondary">Incorrect Characters</span>
-                  <span className="font-mono text-lg text-incorrect-light dark:text-incorrect font-bold">
-                    {stats.incorrectChars}
-                  </span>
+                  <span className="text-2xl text-text-light-secondary dark:text-text-secondary ml-2">char/s</span>
                 </div>
               </div>
             </div>

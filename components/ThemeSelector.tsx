@@ -118,7 +118,7 @@ export default function ThemeSelector({ currentTheme, onThemeChange, isDarkMode 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search themes..."
-            className="w-full px-4 py-2 pl-10 bg-bg-light-primary dark:bg-bg-primary text-text-light-primary dark:text-text-primary rounded-lg border border-accent-light-secondary/20 dark:border-accent-secondary/20 focus:outline-none focus:border-accent-light-primary dark:focus:border-accent-primary transition-colors"
+            className="w-full px-4 py-2 pl-10 bg-bg-light-primary dark:bg-bg-primary text-text-light-primary dark:text-text-primary rounded-lg border border-accent-light-secondary dark:border-accent-secondary border-opacity-20 focus:outline-none focus:border-accent-light-primary dark:focus:border-accent-primary transition-colors"
           />
           <Search className="absolute left-3 top-2.5 w-4 h-4 text-text-light-secondary dark:text-text-secondary" />
         </div>
@@ -139,15 +139,18 @@ export default function ThemeSelector({ currentTheme, onThemeChange, isDarkMode 
                 key={theme}
                 onClick={() => onThemeChange(theme)}
                 className={`
-                  group relative rounded-xl text-left transition-all duration-200 border-2 overflow-hidden bg-bg-light-secondary/50 dark:bg-bg-secondary/50
+                  group relative rounded-xl text-left transition-all duration-200 border-2 overflow-hidden
                   ${currentTheme === theme
-                    ? 'border-accent-light-primary dark:border-accent-primary ring-2 ring-accent-light-primary/20 dark:ring-accent-primary/20'
-                    : 'border-text-light-secondary/20 dark:border-text-secondary/20 hover:border-accent-light-secondary/60 dark:hover:border-accent-secondary/60'
+                    ? 'border-accent-light-primary dark:border-accent-primary ring-2 ring-accent-light-primary dark:ring-accent-primary ring-opacity-20'
+                    : 'border-text-light-secondary dark:border-text-secondary border-opacity-20 hover:border-accent-light-secondary dark:hover:border-accent-secondary hover:border-opacity-60'
                   }
                 `}
+                style={currentTheme === theme ? {
+                  background: `color-mix(in srgb, var(--color-text-secondary) 10%, transparent)`
+                } : undefined}
               >
                 {/* Header with theme name - website color */}
-                <div className="flex items-center justify-between px-3 py-2 bg-bg-light-secondary/50 dark:bg-bg-secondary/50">
+                <div className="flex items-center justify-between px-3 py-2 bg-bg-light-secondary dark:bg-bg-secondary">
                   <span className={`text-xs font-semibold ${
                     currentTheme === theme
                       ? 'text-accent-light-primary dark:text-accent-primary'
@@ -177,7 +180,7 @@ export default function ThemeSelector({ currentTheme, onThemeChange, isDarkMode 
          : (
           <div className="col-span-3 text-center py-8">
             <p className="text-text-light-secondary dark:text-text-secondary">
-              No themes found matching "{search}"
+              No themes found matching &quot;{search}&quot;
             </p>
           </div>
         )}

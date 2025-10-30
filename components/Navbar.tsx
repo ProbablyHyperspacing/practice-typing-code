@@ -1,7 +1,6 @@
 'use client';
 
 import { X, Settings } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
 import LanguageIcon from './LanguageIcon';
 
 interface NavbarProps {
@@ -25,7 +24,7 @@ export default function Navbar({
   return (
     <header className="py-4 px-4">
       <div className="max-w-4xl mx-auto">
-        <nav className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-full px-6 py-3 flex items-center justify-between border border-text-light-secondary/10 dark:border-text-secondary/10">
+        <nav className="bg-bg-light-secondary dark:bg-bg-secondary opacity-50 backdrop-blur-sm rounded-full pl-6 pr-4 py-3 flex items-center justify-between border border-text-light-secondary dark:border-text-secondary border-opacity-10">
           {/* Logo/Name */}
           <div className="flex items-center">
             <h1 className="text-xl font-display font-black tracking-tight">
@@ -48,13 +47,11 @@ export default function Navbar({
               </div>
             )}
 
-            <ThemeToggle />
-
             {/* Settings button - only on home page */}
             {onSettingsClick && (
               <button
                 onClick={onSettingsClick}
-                className="p-2 rounded-full hover:bg-bg-light-primary/20 dark:hover:bg-bg-primary/20 transition-colors duration-200"
+                className="p-2 rounded-full hover:bg-bg-light-primary dark:hover:bg-bg-primary hover:opacity-20 transition-colors duration-200"
                 aria-label="Open settings"
               >
                 <Settings className="w-5 h-5 text-text-light-primary dark:text-text-primary" />
@@ -65,7 +62,7 @@ export default function Navbar({
             {onClose && (
               <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-bg-light-primary/20 dark:hover:bg-bg-primary/20 transition-colors duration-200"
+                className="p-2 rounded-full hover:bg-bg-light-primary dark:hover:bg-bg-primary hover:opacity-20 transition-colors duration-200"
                 aria-label="Close"
               >
                 <X className="w-5 h-5 text-text-light-primary dark:text-text-primary" />

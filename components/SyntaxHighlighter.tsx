@@ -128,6 +128,12 @@ export default function SyntaxHighlighter({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isComplete) return;
 
+      // Let modifier key combinations through to global handler (except Tab)
+      // This allows Shift+Enter (new snippet) and Cmd/Ctrl+Comma (settings) to work
+      if ((e.shiftKey || e.metaKey || e.ctrlKey) && e.key !== 'Tab') {
+        return;
+      }
+
       // Prevent default for special keys
       if (e.key === 'Tab') {
         e.preventDefault();

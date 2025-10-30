@@ -10,19 +10,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Dark mode colors (MonkeyType inspired with seafoam green)
-        'bg-primary': '#1e1e1e',
-        'bg-secondary': '#2c2c2c',
-        'text-primary': '#e4e4e4',
-        'text-secondary': '#646464',
+        // Use CSS variables so they can be updated dynamically
+        'bg-primary': 'var(--color-bg-primary)',
+        'bg-secondary': 'var(--color-bg-secondary)',
+        'text-primary': 'var(--color-text-primary)',
+        'text-secondary': 'var(--color-text-secondary)',
+        'text-accent': 'var(--color-text-accent)',
         'accent-primary': '#5ED4B8', // Bright seafoam green
         'accent-secondary': '#3A8B7A', // Darker seafoam
 
         // Light mode colors (NuPhy inspired with seafoam accents)
-        'bg-light-primary': '#f5f7f6',  // Soft off-white with green tint
-        'bg-light-secondary': '#fdfffe', // Very soft white, not pure white
-        'text-light-primary': '#3a4442',  // Soft dark green-gray
-        'text-light-secondary': '#7a8a88', // Muted gray-green
+        'bg-light-primary': 'var(--color-bg-primary)',
+        'bg-light-secondary': 'var(--color-bg-secondary)',
+        'text-light-primary': 'var(--color-text-primary)',
+        'text-light-secondary': 'var(--color-text-secondary)',
         'accent-light-primary': '#4FC3A8', // Soft seafoam green
         'accent-light-secondary': '#B8E6DA', // Very light seafoam
 

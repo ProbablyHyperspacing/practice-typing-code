@@ -2,11 +2,18 @@ export interface CodeSnippet {
   id: string;
   difficulty: 'easy' | 'medium' | 'hard';
   code: string;
+  length?: string;
+  name?: string;
+  description?: string;
+  situation?: string;
+  encounter?: string;
+  usage?: string;
+  context?: string;
 }
 
 export interface Language {
   name: string;
-  icon: string;
+  icon?: string;
   color: string;
   snippets: CodeSnippet[];
 }

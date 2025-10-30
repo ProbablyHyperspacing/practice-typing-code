@@ -47,7 +47,7 @@ export default function SettingsView({
             <h2 className="text-2xl font-bold text-text-light-primary dark:text-text-primary mb-6">
               Code Theme
             </h2>
-            <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
+            <div className="bg-bg-light-secondary dark:bg-bg-secondary rounded-2xl p-6 border border-text-light-secondary dark:border-text-secondary border-opacity-10">
               <ThemeSelector
                 currentTheme={syntaxTheme}
                 onThemeChange={(theme) => onThemeChange?.(theme)}
@@ -65,7 +65,7 @@ export default function SettingsView({
             <h2 className="text-2xl font-bold text-text-light-primary dark:text-text-primary mb-6">
               Display
             </h2>
-            <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
+            <div className="bg-bg-light-secondary dark:bg-bg-secondary rounded-2xl p-6 border border-text-light-secondary dark:border-text-secondary border-opacity-10">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-lg font-medium text-text-light-primary dark:text-text-primary">
@@ -80,7 +80,7 @@ export default function SettingsView({
                   className={`relative w-14 h-7 rounded-full transition-colors duration-200 focus:outline-none ${
                     showKeyboardHints
                       ? 'bg-accent-light-primary dark:bg-accent-primary'
-                      : 'bg-text-light-secondary/30 dark:bg-text-secondary/30'
+                      : 'bg-text-light-secondary dark:bg-text-secondary'
                   }`}
                 >
                   <motion.div
@@ -122,12 +122,15 @@ export default function SettingsView({
                     onClose();
                   }}
                   className={`
-                    p-5 rounded-2xl transition-all duration-200
+                    p-5 rounded-2xl transition-all duration-200 border-2
                     ${selectedLanguage === key
-                      ? 'bg-accent-light-primary/10 dark:bg-accent-primary/10 border-2 border-accent-light-primary dark:border-accent-primary'
-                      : 'bg-bg-light-secondary/50 dark:bg-bg-secondary/50 border-2 border-text-light-secondary/10 dark:border-text-secondary/10 hover:border-accent-light-secondary/40 dark:hover:border-accent-secondary/40'
+                      ? 'border-text-secondary'
+                      : 'bg-bg-light-secondary dark:bg-bg-secondary border-text-light-secondary dark:border-text-secondary border-opacity-10 hover:border-accent-light-secondary dark:hover:border-accent-secondary hover:border-opacity-40'
                     }
                   `}
+                  style={selectedLanguage === key ? {
+                    background: `color-mix(in srgb, var(--color-text-secondary) 20%, transparent)`
+                  } : undefined}
                 >
                   <div className="flex flex-col items-center gap-3">
                     <div style={{ color: language.color }}>
@@ -135,7 +138,7 @@ export default function SettingsView({
                     </div>
                     <p className={`font-semibold text-sm ${
                       selectedLanguage === key
-                        ? 'text-accent-light-primary dark:text-accent-primary'
+                        ? 'text-text-primary'
                         : 'text-text-light-primary dark:text-text-primary'
                     }`}>
                       {language.name}
@@ -155,40 +158,40 @@ export default function SettingsView({
             <h2 className="text-2xl font-bold text-text-light-primary dark:text-text-primary mb-6">
               Shortcuts
             </h2>
-            <div className="bg-bg-light-secondary/50 dark:bg-bg-secondary/50 backdrop-blur-sm rounded-2xl p-6 border border-text-light-secondary/10 dark:border-text-secondary/10">
+            <div className="bg-bg-light-secondary dark:bg-bg-secondary rounded-2xl p-6 border border-text-light-secondary dark:border-text-secondary border-opacity-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-bg-light-primary/30 dark:bg-bg-primary/30">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-bg-light-primary dark:bg-bg-primary">
                   <span className="text-text-light-primary dark:text-text-primary font-medium">
                     Reset snippet
                   </span>
-                  <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary/20 dark:border-text-secondary/20">
+                  <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary dark:border-text-secondary border-opacity-20">
                     Esc
                   </kbd>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-xl bg-bg-light-primary/30 dark:bg-bg-primary/30">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-bg-light-primary dark:bg-bg-primary">
                   <span className="text-text-light-primary dark:text-text-primary font-medium">
                     New snippet
                   </span>
                   <div className="flex items-center gap-1">
-                    <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary/20 dark:border-text-secondary/20">
+                    <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary dark:border-text-secondary border-opacity-20">
                       Shift
                     </kbd>
                     <span className="text-text-light-secondary dark:text-text-secondary">+</span>
-                    <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary/20 dark:border-text-secondary/20">
+                    <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary dark:border-text-secondary border-opacity-20">
                       Enter
                     </kbd>
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-xl bg-bg-light-primary/30 dark:bg-bg-primary/30">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-bg-light-primary dark:bg-bg-primary">
                   <span className="text-text-light-primary dark:text-text-primary font-medium">
                     Settings
                   </span>
                   <div className="flex items-center gap-1">
-                    <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary/20 dark:border-text-secondary/20">
+                    <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary dark:border-text-secondary border-opacity-20">
                       {typeof window !== 'undefined' && window.navigator?.platform?.includes('Mac') ? '⌘' : 'Ctrl'}
                     </kbd>
                     <span className="text-text-light-secondary dark:text-text-secondary">+</span>
-                    <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary/20 dark:border-text-secondary/20">
+                    <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary dark:border-text-secondary border-opacity-20">
                       ,
                     </kbd>
                   </div>

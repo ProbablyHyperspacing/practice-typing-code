@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Settings } from 'lucide-react';
 import { Languages, CodeSnippet } from '@/types';
 import { useTyping } from '@/hooks/useTyping';
 import { calculateWPM, calculateAccuracy } from '@/utils/typing';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { bundledThemes } from 'shiki';
 import SyntaxHighlighter from '@/components/SyntaxHighlighter';
 import StatsView from '@/components/StatsView';
 import SettingsView from '@/components/SettingsView';
@@ -13,26 +15,25 @@ import ModePill, { TypingMode, TimeOption, SnippetLength, SnippetSource } from '
 import SuperSnippetInfo from '@/components/SuperSnippetInfo';
 import NormalSnippetInfo from '@/components/NormalSnippetInfo';
 import LanguageIcon from '@/components/LanguageIcon';
-import ThemeToggle from '@/components/ThemeToggle';
 import Navbar from '@/components/Navbar';
 import codeSnippetsData from '@/data/codeSnippets.json';
 import superSnippetsData from '@/data/superSnippets.json';
 
 export default function Home() {
   const languages = codeSnippetsData.languages as Languages;
-  const [selectedLanguage, setSelectedLanguage] = useState('javascript');
+  const [selectedLanguage, setSelectedLanguage] = useLocalStorage('selectedLanguage', 'javascript');
   const [currentSnippet, setCurrentSnippet] = useState<CodeSnippet | null>(null);
   const [showStats, setShowStats] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [syntaxTheme, setSyntaxTheme] = useState('github-dark');
-  const [showKeyboardHints, setShowKeyboardHints] = useState(true);
+  const [syntaxTheme, setSyntaxTheme] = useLocalStorage('syntaxTheme', 'github-dark');
+  const [showKeyboardHints, setShowKeyboardHints] = useLocalStorage('showKeyboardHints', true);
 
   // Mode state
-  const [typingMode, setTypingMode] = useState<TypingMode>('training');
-  const [timeLimit, setTimeLimit] = useState(30); // in seconds
-  const [snippetLength, setSnippetLength] = useState<SnippetLength>('short');
+  const [typingMode, setTypingMode] = useLocalStorage<TypingMode>('typingMode', 'training');
+  const [timeLimit, setTimeLimit] = useLocalStorage('timeLimit', 30); // in seconds
+  const [snippetLength, setSnippetLength] = useLocalStorage<SnippetLength>('snippetLength', 'short');
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
-  const [snippetSource, setSnippetSource] = useState<SnippetSource>('normal');
+  const [snippetSource, setSnippetSource] = useLocalStorage<SnippetSource>('snippetSource', 'normal');
   const [currentSuperSnippet, setCurrentSuperSnippet] = useState<any>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [completedSnippets, setCompletedSnippets] = useState(0); // Track completed snippets in time mode
@@ -44,8 +45,18 @@ export default function Home() {
   // Accumulate stats across snippets in time mode
   const cumulativeStatsRef = useRef({ correctChars: 0, incorrectChars: 0 });
 
-  // Adaptive training state
-  const [errorPatterns, setErrorPatterns] = useState<Map<string, number>>(new Map()); // Track error frequency by pattern
+  // Adaptive training state - use localStorage for persistence
+  const [errorPatternsObj, setErrorPatternsObj] = useLocalStorage<Record<string, number>>('errorPatterns', {});
+  const errorPatterns = new Map(Object.entries(errorPatternsObj));
+  const setErrorPatterns = (patterns: Map<string, number> | ((prev: Map<string, number>) => Map<string, number>)) => {
+    if (typeof patterns === 'function') {
+      const currentMap = new Map(Object.entries(errorPatternsObj));
+      const newMap = patterns(currentMap);
+      setErrorPatternsObj(Object.fromEntries(newMap));
+    } else {
+      setErrorPatternsObj(Object.fromEntries(patterns));
+    }
+  };
   const [recentErrors, setRecentErrors] = useState<string[]>([]); // Track recent error types
 
   const {
@@ -86,7 +97,7 @@ export default function Home() {
       const randomIndex = Math.floor(Math.random() * superSnippets.length);
       const superSnippet = superSnippets[randomIndex];
 
-      // Batch state updates to prevent flashing
+      // Batch state updates together to prevent flashing
       setCurrentSuperSnippet(superSnippet);
       setSelectedLanguage(superSnippet.language);
       setCurrentSnippet({
@@ -140,11 +151,11 @@ export default function Home() {
     setCurrentSnippet(filteredSnippets[randomIndex]);
   }, [selectedLanguage, languages, typingMode, errorPatterns, snippetSource]);
 
-  // Select a random snippet on mount and when settings change
+  // Handle snippet source changes
   useEffect(() => {
     selectRandomSnippet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [snippetSource, selectedLanguage]); // Trigger on source or language change
+  }, [snippetSource]); // Trigger only on source change
 
   // Reset typing state when snippet changes (except during time mode auto-advance)
   useEffect(() => {
@@ -185,6 +196,7 @@ export default function Home() {
       timerRef.current = null;
     }
     // The useEffect will handle selecting a new snippet when mode/length changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reset]);
 
   // Timer for time-based mode
@@ -209,6 +221,8 @@ export default function Home() {
                 clearInterval(timerRef.current);
                 timerRef.current = null;
               }
+              // Reset typing state to prevent timer from auto-starting
+              reset();
             }
             return newTime;
           }
@@ -292,7 +306,8 @@ export default function Home() {
         const finalIncorrectChars = cumulativeStatsRef.current.incorrectChars + currentStats.incorrectChars;
         const totalTyped = finalCorrectChars + finalIncorrectChars;
 
-        const timeInSeconds = (Date.now() - startTime) / 1000;
+        // Use the exact time limit for stats, not elapsed time
+        const timeInSeconds = timeLimit;
 
         const finalStats = {
           wpm: calculateWPM(finalCorrectChars, timeInSeconds),
@@ -312,11 +327,11 @@ export default function Home() {
     if (!isComplete) {
       hasProcessedCompletion.current = false;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isComplete, stats, typingMode, timeRemaining, getCurrentStats, resetForTimeMode, selectRandomSnippet, currentSnippet, detectCodePattern]);
 
   const handleRetry = () => {
     setShowStats(false);
-    reset();
     setCompletedSnippets(0); // Reset completed snippets counter
     setTimeModeStats(null); // Clear time mode stats
     setIsTimerActive(false); // Reset timer active state
@@ -329,6 +344,7 @@ export default function Home() {
         timerRef.current = null;
       }
     }
+    reset(); // Reset after clearing time mode state to prevent auto-start
   };
 
   const handleNext = () => {
@@ -388,6 +404,108 @@ export default function Home() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [reset, selectRandomSnippet, showSettings, showStats]);
+
+  // Apply syntax theme colors to page
+  useEffect(() => {
+    const applyThemeColors = async () => {
+      try {
+        const themeModule = await bundledThemes[syntaxTheme as keyof typeof bundledThemes]();
+        const theme = (themeModule as any).default;
+
+        // Extract colors from theme
+        const bgColor = theme.colors?.['editor.background'] || theme.bg;
+        const fgColor = theme.colors?.['editor.foreground'] || theme.fg;
+
+        // For secondary background, try multiple fallbacks to get a slightly different shade
+        let secondaryBg = theme.colors?.['editorWidget.background'] ||
+                         theme.colors?.['input.background'] ||
+                         theme.colors?.['dropdown.background'] ||
+                         theme.colors?.['list.hoverBackground'];
+
+        // If no secondary bg found, lighten or darken the main bg slightly
+        if (!secondaryBg && bgColor) {
+          const hex = bgColor.replace('#', '');
+          const r = parseInt(hex.substring(0, 2), 16);
+          const g = parseInt(hex.substring(2, 4), 16);
+          const b = parseInt(hex.substring(4, 6), 16);
+          const brightness = (r + g + b) / 3;
+          const adjust = brightness > 128 ? -20 : 20;
+          secondaryBg = `#${Math.max(0, Math.min(255, r + adjust)).toString(16).padStart(2, '0')}${Math.max(0, Math.min(255, g + adjust)).toString(16).padStart(2, '0')}${Math.max(0, Math.min(255, b + adjust)).toString(16).padStart(2, '0')}`;
+        }
+
+        // Extract secondary text color from syntax token colors
+        // Look for variable, keyword, or comment colors from the theme's token colors
+        let mutedFg = fgColor;
+        let accentFg = fgColor;
+        if (theme.tokenColors && Array.isArray(theme.tokenColors)) {
+          // Try to find variable color first
+          const variableToken = theme.tokenColors.find((token: any) =>
+            token.scope && (
+              token.scope.includes('variable') ||
+              token.scope.includes('entity.name.variable') ||
+              Array.isArray(token.scope) && token.scope.some((s: string) => s.includes('variable'))
+            )
+          );
+          if (variableToken?.settings?.foreground) {
+            mutedFg = variableToken.settings.foreground;
+          } else {
+            // Fallback to comment color or line number color
+            const commentToken = theme.tokenColors.find((token: any) =>
+              token.scope && (
+                token.scope.includes('comment') ||
+                Array.isArray(token.scope) && token.scope.some((s: string) => s.includes('comment'))
+              )
+            );
+            mutedFg = commentToken?.settings?.foreground ||
+                     theme.colors?.['editorLineNumber.foreground'] ||
+                     theme.colors?.['descriptionForeground'] ||
+                     fgColor;
+          }
+
+          // Extract accent color from keyword or string tokens
+          const keywordToken = theme.tokenColors.find((token: any) =>
+            token.scope && (
+              token.scope.includes('keyword') ||
+              token.scope.includes('storage.type') ||
+              Array.isArray(token.scope) && token.scope.some((s: string) => s.includes('keyword') || s.includes('storage'))
+            )
+          );
+          const stringToken = theme.tokenColors.find((token: any) =>
+            token.scope && (
+              token.scope.includes('string') ||
+              Array.isArray(token.scope) && token.scope.some((s: string) => s.includes('string'))
+            )
+          );
+          accentFg = keywordToken?.settings?.foreground ||
+                    stringToken?.settings?.foreground ||
+                    fgColor;
+        }
+
+        console.log('Theme colors:', { bgColor, fgColor, secondaryBg, mutedFg, accentFg });
+
+        if (bgColor) {
+          document.documentElement.style.setProperty('--color-bg-primary', bgColor);
+          document.body.style.backgroundColor = bgColor;
+        }
+        if (secondaryBg) {
+          document.documentElement.style.setProperty('--color-bg-secondary', secondaryBg);
+        }
+        if (fgColor) {
+          document.documentElement.style.setProperty('--color-text-primary', fgColor);
+        }
+        if (mutedFg) {
+          document.documentElement.style.setProperty('--color-text-secondary', mutedFg);
+        }
+        if (accentFg) {
+          document.documentElement.style.setProperty('--color-text-accent', accentFg);
+        }
+      } catch (error) {
+        console.error('Failed to load theme colors:', error);
+      }
+    };
+
+    applyThemeColors();
+  }, [syntaxTheme]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -469,6 +587,9 @@ export default function Home() {
               <div className="max-w-6xl mx-auto space-y-6">
                 {/* Mode Pill */}
                 <ModePill
+                  mode={typingMode}
+                  timeOption={timeLimit}
+                  snippetSource={snippetSource}
                   onModeChange={handleModeChange}
                   timeRemaining={timeRemaining}
                   isTyping={isTimerActive}
@@ -487,7 +608,7 @@ export default function Home() {
                       theme={syntaxTheme}
                       currentIndex={currentIndex}
                       typedText={typedText}
-                      isComplete={isComplete && typingMode === 'snippet'}
+                      isComplete={isComplete && typingMode === 'training'}
                       onKeyPress={handleKeyPress}
                       showKeyboardHints={showKeyboardHints}
                     />
