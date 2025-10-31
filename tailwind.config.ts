@@ -31,7 +31,7 @@ const config: Config = {
         'correct': '#4cd137',
         'correct-light': '#6fb58e', // Softer green for light mode
         'incorrect': '#ff4757',
-        'incorrect-light': '#d98f93', // Softer red for light mode
+        'incorrect-light': '#ff4757', // Match dark mode for consistency
         'text-error': '#ff4757',
       },
       fontFamily: {
