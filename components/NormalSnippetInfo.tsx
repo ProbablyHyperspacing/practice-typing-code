@@ -9,11 +9,11 @@ interface NormalSnippetInfoProps {
 export default function NormalSnippetInfo({ name, description, situation }: NormalSnippetInfoProps) {
   return (
     <div
-      className="fixed top-20 mt-20 space-y-4 lg:space-y-6 pointer-events-none"
+      className="fixed top-20 mt-20 space-y-4 lg:space-y-6 pointer-events-none transition-all duration-200"
       style={{
         paddingTop: '1.375rem',
-        left: 'clamp(0.5rem, 2vw, 8rem)',
-        width: 'clamp(10rem, 15vw, 16rem)'
+        width: 'clamp(10rem, 15vw, 16rem)',
+        left: 'calc((max(calc(0.5rem + 11rem), calc(50vw - 488px + 11rem)) - clamp(10rem, 15vw, 16rem)) / 2)'
       }}
     >
       {/* Name */}

@@ -2,7 +2,10 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { CodeSnippet, TypingStats } from '@/types';
 import { calculateWPM, calculateAccuracy } from '@/utils/typing';
 
-export function useTyping(snippet: CodeSnippet | null) {
+export function useTyping(
+  snippet: CodeSnippet | null,
+  onKeystroke?: (expectedKey: string, actualKey: string) => void
+) {
   const [typedText, setTypedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [errors, setErrors] = useState(0);
@@ -82,6 +85,9 @@ export function useTyping(snippet: CodeSnippet | null) {
 
     // Handle Enter key - only process if next character is a newline
     if (key === 'Enter') {
+      // Track keystroke
+      onKeystroke?.(targetChar, '\n');
+
       if (targetChar === '\n') {
         // Process Enter as a newline
         setTypedText(prev => prev + '\n');
@@ -118,6 +124,10 @@ export function useTyping(snippet: CodeSnippet | null) {
     if (key === 'Tab') {
       // Check if the next 2 characters are spaces (common tab width)
       const nextTwoChars = snippet.code.substring(currentIndex, currentIndex + 2);
+
+      // Track keystroke
+      onKeystroke?.(targetChar, '\t');
+
       if (nextTwoChars === '  ') {
         // Tab matches 2 spaces, add them and advance by 2
         setTypedText(prev => prev + '  ');
@@ -155,6 +165,9 @@ export function useTyping(snippet: CodeSnippet | null) {
     }
 
     // Handle regular characters
+    // Track keystroke
+    onKeystroke?.(targetChar, key);
+
     setTypedText(prev => prev + key);
 
     if (key === targetChar) {
@@ -186,7 +199,7 @@ export function useTyping(snippet: CodeSnippet | null) {
         totalChars: snippet.code.length,
       });
     }
-  }, [snippet, currentIndex, startTime, isComplete, typedText]);
+  }, [snippet, currentIndex, startTime, isComplete, typedText, onKeystroke]);
 
   const getCurrentStats = useCallback((): TypingStats | null => {
     if (!startTime || !snippet) return null;

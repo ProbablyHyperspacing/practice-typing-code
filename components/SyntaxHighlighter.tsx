@@ -296,9 +296,12 @@ export default function SyntaxHighlighter({
                       const globalIndex = charIndex;
                       const nextChar = i + 1 < tokenChars.length ? tokenChars[i + 1] : undefined;
 
+                      // Check if we're in a space-only token (any sequence of spaces in the code)
+                      const isSpaceToken = token.content.match(/^ +$/);
+
                       // Check if we should treat this as the start of a tab (double space)
-                      const isTabStart = showKeyboardHints && isLeadingSpaces && char === ' ' && nextChar === ' ' && i % 2 === 0;
-                      const isTabEnd = showKeyboardHints && isLeadingSpaces && char === ' ' && i > 0 && tokenChars[i - 1] === ' ' && i % 2 === 1;
+                      const isTabStart = showKeyboardHints && isSpaceToken && char === ' ' && nextChar === ' ' && i % 2 === 0;
+                      const isTabEnd = showKeyboardHints && isSpaceToken && char === ' ' && i > 0 && tokenChars[i - 1] === ' ' && i % 2 === 1;
 
                       if (isTabStart) {
                         // This is the first space of a tab, we'll skip it but still count it
@@ -467,7 +470,7 @@ export default function SyntaxHighlighter({
   return (
     <div
       ref={containerRef}
-      className="typing-text p-8 max-h-[500px] overflow-y-auto relative outline-none"
+      className="typing-text py-8 max-h-[500px] overflow-y-auto relative outline-none"
       tabIndex={0}
     >
       <pre className="whitespace-pre font-mono text-base leading-relaxed">

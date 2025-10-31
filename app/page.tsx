@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Settings } from 'lucide-react';
 import { Languages, CodeSnippet } from '@/types';
@@ -8,6 +8,9 @@ import { useTyping } from '@/hooks/useTyping';
 import { calculateWPM, calculateAccuracy } from '@/utils/typing';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { bundledThemes } from 'shiki';
+import { useKeystrokeTracking } from '@/hooks/useKeystrokeTracking';
+import { selectAdaptiveSnippet } from '@/utils/snippetSelection';
+import TrainingProgressBar from '@/components/TrainingProgressBar';
 import SyntaxHighlighter from '@/components/SyntaxHighlighter';
 import StatsView from '@/components/StatsView';
 import SettingsView from '@/components/SettingsView';
@@ -60,6 +63,20 @@ export default function Home() {
   };
   const [recentErrors, setRecentErrors] = useState<string[]>([]); // Track recent error types
 
+  // Keystroke tracking for adaptive learning
+  const {
+    trackingData,
+    recordKeystroke,
+    resetTimer,
+    getWeakestCharacters,
+    getTrainingProgress,
+    getNeedsTraining,
+    clearTracking,
+  } = useKeystrokeTracking();
+
+  // Track recent snippet IDs to avoid repetition
+  const recentSnippetIds = useRef<string[]>([]);
+
   const {
     typedText,
     currentIndex,
@@ -71,7 +88,7 @@ export default function Home() {
     reset,
     resetForTimeMode,
     getCurrentStats,
-  } = useTyping(currentSnippet);
+  } = useTyping(currentSnippet, recordKeystroke);
 
   // Detect patterns in code to categorize snippets
   const detectCodePattern = (code: string): string => {
@@ -94,11 +111,6 @@ export default function Home() {
   const selectRandomSnippet = useCallback(() => {
     // If using super snippets, select from that data
     if (snippetSource === 'super') {
-      // Save the current normal language before switching to super
-      if (languages[selectedLanguage]) {
-        lastNormalLanguageRef.current = selectedLanguage;
-      }
-
       const superSnippets = (superSnippetsData as any).superSnippets;
       const randomIndex = Math.floor(Math.random() * superSnippets.length);
       const superSnippet = superSnippets[randomIndex];
@@ -106,57 +118,65 @@ export default function Home() {
       // Batch state updates together to prevent flashing
       setCurrentSuperSnippet(superSnippet);
       setSelectedLanguage(superSnippet.language);
-      setCurrentSnippet({
+      const newSnippet = {
         id: superSnippet.id,
         code: superSnippet.code,
         length: superSnippet.length,
         difficulty: superSnippet.difficulty
-      });
+      };
+      setCurrentSnippet(newSnippet);
+
+      // Track recent snippet
+      recentSnippetIds.current = [...recentSnippetIds.current, superSnippet.id].slice(-10);
       return;
     }
 
     // Normal snippet selection
     // If current language doesn't exist in normal languages (e.g., coming from super snippets),
     // restore the last normal language we used
-    const currentLang = languages[selectedLanguage] ? selectedLanguage : lastNormalLanguageRef.current;
+    const currentLang = languages[selectedLanguage]
+      ? selectedLanguage
+      : (languages[lastNormalLanguageRef.current] ? lastNormalLanguageRef.current : 'javascript');
 
     const snippets = languages[currentLang].snippets;
 
     // Filter snippets based on mode
-    let filteredSnippets = snippets;
+    let selectedSnippet: CodeSnippet | null = null;
+
     if (typingMode === 'training') {
-      // For training mode, use all snippets with adaptive selection
-      if (errorPatterns.size > 0 && Math.random() < 0.7) { // 70% chance to focus on problem areas
-        // Get the pattern with most errors
-        const sortedPatterns = Array.from(errorPatterns.entries()).sort((a, b) => b[1] - a[1]);
-        const topPattern = sortedPatterns[0][0];
+      // Use new adaptive system based on keystroke-level tracking
+      const weakChars = getWeakestCharacters(10);
 
-        // Filter snippets that match the problematic pattern
-        const patternSnippets = snippets.filter((s: any) => {
-          const pattern = detectCodePattern(s.code);
-          return pattern === topPattern;
-        });
-
-        if (patternSnippets.length > 0) {
-          filteredSnippets = patternSnippets;
-        }
+      if (weakChars.length > 0) {
+        // Use smart snippet selection based on weak characters
+        selectedSnippet = selectAdaptiveSnippet(snippets, weakChars, recentSnippetIds.current);
+      } else {
+        // No tracking data yet, select random
+        selectedSnippet = snippets[Math.floor(Math.random() * snippets.length)];
       }
-      // Otherwise use all snippets (no length filtering)
     } else {
       // For time mode, use short snippets for rapid-fire practice
-      filteredSnippets = snippets.filter((s: any) => s.length === 'short');
+      const shortSnippets = snippets.filter((s: any) => s.length === 'short');
+      const pool = shortSnippets.length > 0 ? shortSnippets : snippets;
+      selectedSnippet = pool[Math.floor(Math.random() * pool.length)];
     }
 
-    if (filteredSnippets.length === 0) filteredSnippets = snippets;
-    const randomIndex = Math.floor(Math.random() * filteredSnippets.length);
+    if (!selectedSnippet) {
+      selectedSnippet = snippets[Math.floor(Math.random() * snippets.length)];
+    }
 
     // Batch state updates for normal snippets
     setCurrentSuperSnippet(null);
     if (currentLang !== selectedLanguage) {
       setSelectedLanguage(currentLang);
     }
-    setCurrentSnippet(filteredSnippets[randomIndex]);
-  }, [selectedLanguage, languages, typingMode, errorPatterns, snippetSource]);
+    setCurrentSnippet(selectedSnippet);
+
+    // Track recent snippet
+    if (selectedSnippet) {
+      recentSnippetIds.current = [...recentSnippetIds.current, selectedSnippet.id].slice(-10);
+    }
+  }, [selectedLanguage, languages, typingMode, snippetSource, getWeakestCharacters]);
 
   // Initialize timeRemaining when in time mode (only if it's null, not if it's 0)
   useEffect(() => {
@@ -176,6 +196,7 @@ export default function Home() {
     // Only reset if we have a snippet and we're not auto-advancing
     if (currentSnippet && !isAutoAdvancing.current) {
       reset();
+      resetTimer(); // Reset keystroke tracking timer
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSnippet?.id]); // Only trigger when snippet ID changes
@@ -346,7 +367,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isComplete, stats, typingMode, timeRemaining, getCurrentStats, resetForTimeMode, selectRandomSnippet, currentSnippet, detectCodePattern]);
 
-  const handleRetry = () => {
+  const handleRetry = useCallback(() => {
     setShowStats(false);
     setCompletedSnippets(0); // Reset completed snippets counter
     setTimeModeStats(null); // Clear time mode stats
@@ -361,9 +382,9 @@ export default function Home() {
       }
     }
     reset(); // Reset after clearing time mode state to prevent auto-start
-  };
+  }, [typingMode, timeLimit, reset]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setShowStats(false);
     // In time mode, reset timer state for a fresh start
     if (typingMode === 'time') {
@@ -374,18 +395,64 @@ export default function Home() {
     }
     selectRandomSnippet();
     reset();
-  };
+  }, [typingMode, timeLimit, selectRandomSnippet, reset]);
 
-  const handleNewSnippet = () => {
+  const handleNewSnippet = useCallback(() => {
     // Don't reset typing stats, just get a new snippet
     selectRandomSnippet();
     reset();
-  };
+  }, [selectRandomSnippet, reset]);
 
-  const handleLanguageChange = (language: string) => {
+  const handleLanguageChange = useCallback((language: string) => {
     setSelectedLanguage(language);
+    // Save this as the last normal language so we can restore it when switching back from super snippets
+    lastNormalLanguageRef.current = language;
     setShowStats(false);
-  };
+  }, []);
+
+  const handleClearAllData = useCallback(() => {
+    // Clear all localStorage data
+    if (typeof window !== 'undefined') {
+      const keysToRemove = [
+        'selectedLanguage',
+        'syntaxTheme',
+        'showKeyboardHints',
+        'typingMode',
+        'timeLimit',
+        'snippetLength',
+        'snippetSource',
+        'errorPatterns',
+        'keystrokeTracking'
+      ];
+
+      keysToRemove.forEach(key => {
+        window.localStorage.removeItem(key);
+      });
+    }
+
+    // Clear keystroke tracking
+    clearTracking();
+
+    // Reset all state to defaults
+    setSelectedLanguage('javascript');
+    setSyntaxTheme('github-dark');
+    setShowKeyboardHints(true);
+    setTypingMode('training');
+    setTimeLimit(30);
+    setSnippetLength('short');
+    setSnippetSource('normal');
+    setErrorPatternsObj({});
+
+    // Reset UI state
+    setShowSettings(false);
+    setShowStats(false);
+    reset();
+
+    // Select a new snippet with defaults
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  }, [clearTracking, setSelectedLanguage, setSyntaxTheme, setShowKeyboardHints, setTypingMode, setTimeLimit, setSnippetLength, setSnippetSource, setErrorPatternsObj, reset]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -429,12 +496,20 @@ export default function Home() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [reset, selectRandomSnippet, showSettings, showStats]);
 
+  // Cache for loaded themes to avoid re-loading
+  const themeCache = useRef<Record<string, any>>({});
+
   // Apply syntax theme colors to page
   useEffect(() => {
     const applyThemeColors = async () => {
       try {
-        const themeModule = await bundledThemes[syntaxTheme as keyof typeof bundledThemes]();
-        const theme = (themeModule as any).default;
+        // Check cache first
+        let theme = themeCache.current[syntaxTheme];
+        if (!theme) {
+          const themeModule = await bundledThemes[syntaxTheme as keyof typeof bundledThemes]();
+          theme = (themeModule as any).default;
+          themeCache.current[syntaxTheme] = theme;
+        }
 
         // Extract colors from theme
         const bgColor = theme.colors?.['editor.background'] || theme.bg;
@@ -505,8 +580,6 @@ export default function Home() {
                     fgColor;
         }
 
-        console.log('Theme colors:', { bgColor, fgColor, secondaryBg, mutedFg, accentFg });
-
         if (bgColor) {
           document.documentElement.style.setProperty('--color-bg-primary', bgColor);
           document.body.style.backgroundColor = bgColor;
@@ -552,6 +625,7 @@ export default function Home() {
               showKeyboardHints={showKeyboardHints}
               onKeyboardHintsChange={setShowKeyboardHints}
               onClose={() => setShowSettings(false)}
+              onClearData={handleClearAllData}
             />
           </motion.div>
         ) : showStats ? (
@@ -608,7 +682,12 @@ export default function Home() {
                 />
               )}
 
-              <div className="max-w-6xl mx-auto space-y-6">
+              <div className="max-w-6xl mx-auto space-y-6"
+                style={{
+                  marginLeft: 'max(calc(0.5rem + 11rem), calc(50vw - 488px + 11rem))',
+                  marginRight: 'auto'
+                }}
+              >
                 {/* Mode Pill */}
                 <ModePill
                   mode={typingMode}
@@ -624,7 +703,7 @@ export default function Home() {
 
                 {/* Typing Area with Syntax Highlighting */}
                 {currentSnippet && (
-                  <div className="ml-48">
+                  <div>
                     <SyntaxHighlighter
                       key={currentSnippet.id}
                       code={currentSnippet.code}
@@ -640,6 +719,17 @@ export default function Home() {
                 )}
 
               </div>
+
+              {/* Training Progress Bar - only show in training mode with normal snippets */}
+              {/* Fixed position so multi-line snippets don't move it around */}
+              {typingMode === 'training' && snippetSource === 'normal' && (
+                <div className="fixed bottom-24 left-0 right-0 flex justify-center pointer-events-none">
+                  <TrainingProgressBar
+                    needsTraining={getNeedsTraining()}
+                    progress={getTrainingProgress()}
+                  />
+                </div>
+              )}
             </main>
 
           </motion.div>

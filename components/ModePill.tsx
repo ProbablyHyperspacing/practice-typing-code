@@ -90,11 +90,10 @@ export default function ModePill({
 
   return (
     <div className="relative mt-20 mb-10">
-      <div className="max-w-6xl mx-auto">
-        {/* Mode controls and descriptions row */}
-        <div className="flex items-start justify-between">
-          {/* Left side - Mode controls with descriptions */}
-          <div className="ml-56 flex items-start gap-6">
+      {/* Mode controls and descriptions row */}
+      <div className="flex items-start gap-8">
+        {/* Left side - Mode controls with descriptions */}
+        <div className="flex items-start gap-6">
             {/* Training/Time group with descriptions */}
             <div className="flex flex-col gap-1">
               {/* Buttons row */}
@@ -228,7 +227,7 @@ export default function ModePill({
                     handleSnippetSourceChange('super');
                     e.currentTarget.blur();
                   }}
-                  className={`px-3 py-1.5 text-sm font-medium transition-all duration-300 rounded-md border ${
+                  className={`px-3 py-1.5 text-sm font-medium transition-all duration-300 rounded-md border mr-8 ${
                     snippetSource === 'super'
                       ? 'text-text-primary border-text-secondary'
                       : 'text-text-secondary opacity-40 hover:opacity-60 border-text-secondary border-opacity-20 hover:border-opacity-40'
@@ -268,8 +267,8 @@ export default function ModePill({
             </div>
           </div>
 
-          {/* Right side - Action buttons aligned with right edge */}
-          <div className="mr-56 flex items-center gap-1 relative">
+          {/* Right side - Action buttons */}
+          <div className="flex items-center gap-1 relative">
             {/* Reset button with hand-drawn annotation */}
             <div className="relative">
               <button
@@ -325,8 +324,6 @@ export default function ModePill({
             </div>
           </div>
         </div>
-
-      </div>
     </div>
   );
 }

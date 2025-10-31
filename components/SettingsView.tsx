@@ -6,6 +6,7 @@ import ThemeSelector from './ThemeSelector';
 import LanguageIcon from './LanguageIcon';
 import Navbar from './Navbar';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useState } from 'react';
 
 interface SettingsViewProps {
   languages: Languages;
@@ -16,6 +17,7 @@ interface SettingsViewProps {
   showKeyboardHints?: boolean;
   onKeyboardHintsChange?: (show: boolean) => void;
   onClose: () => void;
+  onClearData?: () => void;
 }
 
 export default function SettingsView({
@@ -27,8 +29,23 @@ export default function SettingsView({
   showKeyboardHints = true,
   onKeyboardHintsChange,
   onClose,
+  onClearData,
 }: SettingsViewProps) {
   const { theme: appTheme } = useTheme();
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
+  const handleClearData = () => {
+    setShowConfirmDialog(true);
+  };
+
+  const confirmClearData = () => {
+    onClearData?.();
+    setShowConfirmDialog(false);
+  };
+
+  const cancelClearData = () => {
+    setShowConfirmDialog(false);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -39,11 +56,7 @@ export default function SettingsView({
       <main className="flex-1 px-4 pb-8">
         <div className="max-w-6xl mx-auto space-y-12">
           {/* Syntax Theme Section */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
+          <section>
             <h2 className="text-2xl font-bold text-text-light-primary dark:text-text-primary mb-6">
               Code Theme
             </h2>
@@ -54,14 +67,10 @@ export default function SettingsView({
                 isDarkMode={appTheme === 'dark'}
               />
             </div>
-          </motion.section>
+          </section>
 
           {/* Keyboard Hints Section */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-          >
+          <section>
             <h2 className="text-2xl font-bold text-text-light-primary dark:text-text-primary mb-6">
               Display
             </h2>
@@ -97,24 +106,17 @@ export default function SettingsView({
                 </button>
               </div>
             </div>
-          </motion.section>
+          </section>
 
           {/* Language Selection */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <section>
             <h2 className="text-2xl font-bold text-text-light-primary dark:text-text-primary mb-6">
               Language
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {Object.entries(languages).map(([key, language], index) => (
+              {Object.entries(languages).map(([key, language]) => (
                 <motion.button
                   key={key}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 + index * 0.05 }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
@@ -147,14 +149,10 @@ export default function SettingsView({
                 </motion.button>
               ))}
             </div>
-          </motion.section>
+          </section>
 
           {/* Keyboard Shortcuts */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
+          <section>
             <h2 className="text-2xl font-bold text-text-light-primary dark:text-text-primary mb-6">
               Shortcuts
             </h2>
@@ -188,7 +186,7 @@ export default function SettingsView({
                   </span>
                   <div className="flex items-center gap-1">
                     <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary dark:border-text-secondary border-opacity-20">
-                      {typeof window !== 'undefined' && window.navigator?.platform?.includes('Mac') ? '⌘' : 'Ctrl'}
+                      {typeof window !== 'undefined' && window.navigator?.userAgent?.includes('Mac') ? '⌘' : 'Ctrl'}
                     </kbd>
                     <span className="text-text-light-secondary dark:text-text-secondary">+</span>
                     <kbd className="px-3 py-1.5 bg-bg-light-primary dark:bg-bg-primary rounded-lg text-sm font-mono text-text-light-primary dark:text-text-primary border border-text-light-secondary dark:border-text-secondary border-opacity-20">
@@ -198,9 +196,72 @@ export default function SettingsView({
                 </div>
               </div>
             </div>
-          </motion.section>
+          </section>
+
+          {/* Data Management */}
+          <section>
+            <h2 className="text-2xl font-bold text-text-light-primary dark:text-text-primary mb-6">
+              Data
+            </h2>
+            <div className="bg-bg-light-secondary dark:bg-bg-secondary rounded-2xl p-6 border border-text-light-secondary dark:border-text-secondary border-opacity-10">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-text-light-primary dark:text-text-primary">
+                    Clear All Data
+                  </h3>
+                  <p className="text-sm text-text-light-secondary dark:text-text-secondary mt-1">
+                    Reset all settings, preferences, and training progress
+                  </p>
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleClearData}
+                  className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium transition-colors duration-200"
+                >
+                  Clear Data
+                </motion.button>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
+
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-bg-light-secondary dark:bg-bg-secondary rounded-2xl p-6 max-w-md w-full border border-text-light-secondary dark:border-text-secondary border-opacity-20"
+          >
+            <h3 className="text-xl font-bold text-text-light-primary dark:text-text-primary mb-4">
+              Clear All Data?
+            </h3>
+            <p className="text-text-light-secondary dark:text-text-secondary mb-6">
+              This will permanently delete all your settings, preferences, and training progress. This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={cancelClearData}
+                className="px-4 py-2 rounded-lg bg-bg-light-primary dark:bg-bg-primary text-text-light-primary dark:text-text-primary font-medium border border-text-light-secondary dark:border-text-secondary border-opacity-20 hover:border-opacity-40 transition-colors duration-200"
+              >
+                Cancel
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={confirmClearData}
+                className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium transition-colors duration-200"
+              >
+                Clear All Data
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
