@@ -47,6 +47,9 @@ export default function Home() {
   const [isTimerActive, setIsTimerActive] = useState(false); // Track if timer is running
   const hasProcessedCompletion = useRef(false); // Track if we've processed the current completion
 
+  // Mobile detection state
+  const [isMobile, setIsMobile] = useState(false);
+
   // Accumulate stats across snippets in time mode
   const cumulativeStatsRef = useRef({ correctChars: 0, incorrectChars: 0 });
 
@@ -185,6 +188,17 @@ export default function Home() {
       setTimeRemaining(timeLimit);
     }
   }, [typingMode, timeLimit, timeRemaining, showStats]); // React to mode and limit changes
+
+  // Detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Handle snippet source and language changes
   useEffect(() => {
@@ -607,6 +621,23 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Mobile Overlay */}
+      {isMobile && (
+        <div className="fixed inset-0 z-50 bg-bg-light-primary dark:bg-bg-primary flex items-center justify-center p-8">
+          <div className="max-w-md text-center">
+            <h1 className="text-4xl font-display font-black text-text-light-primary dark:text-text-primary mb-6">
+              Desktop Only
+            </h1>
+            <p className="text-xl text-text-light-secondary dark:text-text-secondary leading-relaxed mb-8">
+              Code Typing Practice is designed for desktop browsers with a physical keyboard.
+            </p>
+            <p className="text-lg text-text-light-secondary dark:text-text-secondary leading-relaxed">
+              Please visit this site on a desktop or laptop computer to practice typing code.
+            </p>
+          </div>
+        </div>
+      )}
+
       <AnimatePresence mode="wait">
         {showSettings ? (
           // Settings View
