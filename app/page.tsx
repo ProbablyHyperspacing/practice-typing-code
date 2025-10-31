@@ -4,6 +4,7 @@ import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { AnimatePresence, motion } from 'framer-motion';
 import { Settings } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Languages, CodeSnippet } from '@/types';
 import { useTyping } from '@/hooks/useTyping';
 import { calculateWPM, calculateAccuracy } from '@/utils/typing';
@@ -199,6 +200,18 @@ export default function Home() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Prevent space key from scrolling the page
+  useEffect(() => {
+    const preventSpaceScroll = (e: KeyboardEvent) => {
+      if (e.key === ' ' && !showStats && !showSettings) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', preventSpaceScroll);
+    return () => window.removeEventListener('keydown', preventSpaceScroll);
+  }, [showStats, showSettings]);
 
   // Handle snippet source and language changes
   useEffect(() => {
@@ -623,17 +636,31 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       {/* Mobile Overlay */}
       {isMobile && (
-        <div className="fixed inset-0 z-50 bg-bg-light-primary dark:bg-bg-primary flex items-center justify-center p-8">
-          <div className="max-w-md text-center">
-            <h1 className="text-4xl font-display font-black text-text-light-primary dark:text-text-primary mb-6">
-              Desktop Only
-            </h1>
-            <p className="text-xl text-text-light-secondary dark:text-text-secondary leading-relaxed mb-8">
-              Code Typing Practice is designed for desktop browsers with a physical keyboard.
+        <div className="fixed inset-0 z-50 bg-bg-light-primary dark:bg-bg-primary flex items-start justify-center p-8 pt-16 overflow-auto">
+          <div className="max-w-2xl text-center">
+            <div className="mb-16">
+              <h2 className="text-2xl font-display font-black tracking-tight">
+                <span className="text-gradient">Code Typing Practice</span>
+              </h2>
+            </div>
+            <p className="prose prose-lg dark:prose-invert text-accent-light-primary dark:text-accent-primary mb-2">
+              Why are you trying to learn to code on a phone...?
             </p>
-            <p className="text-lg text-text-light-secondary dark:text-text-secondary leading-relaxed">
-              Please visit this site on a desktop or laptop computer to practice typing code.
+            <p className="prose dark:prose-invert text-text-light-secondary dark:text-text-secondary opacity-60 mb-8">
+              Oh, maybe you just wanted to see what it looked like. Here you go:
             </p>
+            <div className="w-full mx-auto">
+              <Image
+                src="/desktop-screenshot.png"
+                alt="Code Typing Practice Desktop Screenshot"
+                width={1920}
+                height={1080}
+                className="w-full h-auto object-contain"
+                style={{ filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15))' }}
+                priority
+                unoptimized
+              />
+            </div>
           </div>
         </div>
       )}
