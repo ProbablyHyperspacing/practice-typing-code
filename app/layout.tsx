@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { Inter, Outfit, Caveat } from 'next/font/google';
 import './globals.css';
@@ -35,12 +35,13 @@ export const metadata: Metadata = {
     description: 'Improve your coding speed and accuracy',
     type: 'website',
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
