@@ -44,6 +44,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ6XQKG9XK"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-QZ6XQKG9XK');
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.variable} ${outfit.variable} ${caveat.variable} bg-bg-light-primary dark:bg-bg-primary text-text-light-primary dark:text-text-primary min-h-screen`}>
         <ThemeProvider>
           {children}
