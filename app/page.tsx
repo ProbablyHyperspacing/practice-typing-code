@@ -21,6 +21,7 @@ import SuperSnippetInfo from '@/components/SuperSnippetInfo';
 import NormalSnippetInfo from '@/components/NormalSnippetInfo';
 import LanguageIcon from '@/components/LanguageIcon';
 import Navbar from '@/components/Navbar';
+import MobileHome from '@/components/MobileHome';
 import codeSnippetsData from '@/data/codeSnippets.json';
 import superSnippetsData from '@/data/superSnippets.json';
 
@@ -47,9 +48,6 @@ export default function Home() {
   const lastNormalLanguageRef = useRef<string>(selectedLanguage); // Remember last normal language
   const [isTimerActive, setIsTimerActive] = useState(false); // Track if timer is running
   const hasProcessedCompletion = useRef(false); // Track if we've processed the current completion
-
-  // Mobile detection state
-  const [isMobile, setIsMobile] = useState(false);
 
   // Accumulate stats across snippets in time mode
   const cumulativeStatsRef = useRef({ correctChars: 0, incorrectChars: 0 });
@@ -189,17 +187,6 @@ export default function Home() {
       setTimeRemaining(timeLimit);
     }
   }, [typingMode, timeLimit, timeRemaining, showStats]); // React to mode and limit changes
-
-  // Detect mobile devices
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Prevent space key from scrolling the page
   useEffect(() => {
@@ -633,39 +620,15 @@ export default function Home() {
   }, [syntaxTheme]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Mobile Overlay */}
-      {isMobile && (
-        <div className="fixed inset-0 z-50 bg-bg-light-primary dark:bg-bg-primary flex items-start justify-center p-8 pt-16 overflow-auto">
-          <div className="max-w-2xl text-center">
-            <div className="mb-16">
-              <h2 className="text-2xl font-display font-black tracking-tight">
-                <span className="text-gradient">Code Typing Practice</span>
-              </h2>
-            </div>
-            <p className="prose prose-lg dark:prose-invert text-accent-light-primary dark:text-accent-primary mb-2">
-              Why are you trying to learn to code on a phone...?
-            </p>
-            <p className="prose dark:prose-invert text-text-light-secondary dark:text-text-secondary opacity-60 mb-8">
-              Oh, maybe you just wanted to see what it looked like. Here you go:
-            </p>
-            <div className="w-full mx-auto">
-              <Image
-                src="/desktop-screenshot.png"
-                alt="Code Typing Practice Desktop Screenshot"
-                width={1920}
-                height={1080}
-                className="w-full h-auto object-contain"
-                style={{ filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15))' }}
-                priority
-                unoptimized
-              />
-            </div>
-          </div>
-        </div>
-      )}
+    <>
+      {/* Mobile version - shows only on screens < 768px */}
+      <div className="block md:hidden">
+        <MobileHome />
+      </div>
 
-      <AnimatePresence mode="wait">
+      {/* Desktop version - shows only on screens >= 768px */}
+      <div className="hidden md:flex min-h-screen flex-col">
+        <AnimatePresence mode="wait">
         {showSettings ? (
           // Settings View
           <motion.div
@@ -1038,6 +1001,7 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+      </div>
+    </>
   );
 }
