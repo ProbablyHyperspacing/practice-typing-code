@@ -23,15 +23,15 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: 'Practice Typing Code',
+  title: 'Code Typing Practice',
   description: 'Improve your coding speed and accuracy with a minimalist typing practice app for developers',
   keywords: 'typing, practice, coding, programming, speed, accuracy, developer',
-  authors: [{ name: 'Practice Typing Code' }],
+  authors: [{ name: 'Code Typing Practice' }],
   icons: {
     icon: '/favicon.svg',
   },
   openGraph: {
-    title: 'Practice Typing Code',
+    title: 'Code Typing Practice',
     description: 'Improve your coding speed and accuracy',
     type: 'website',
   },

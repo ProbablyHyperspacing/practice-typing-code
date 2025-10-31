@@ -92,30 +92,31 @@ export function useTyping(
         // Process Enter as a newline
         setTypedText(prev => prev + '\n');
         setCurrentIndex(prev => prev + 1);
+
+        // Check if complete after handling Enter
+        if (currentIndex + 1 >= snippet.code.length) {
+          const now = Date.now();
+          setEndTime(now);
+          setIsComplete(true);
+
+          // Calculate final stats
+          const timeInSeconds = (now - startTime!) / 1000;
+          const correctChars = currentIndex + 1 - totalErrorsRef.current;
+          const totalTyped = typedText.length + 1;
+
+          setStats({
+            wpm: calculateWPM(correctChars, timeInSeconds),
+            accuracy: calculateAccuracy(correctChars, totalTyped),
+            time: timeInSeconds,
+            correctChars,
+            incorrectChars: totalErrorsRef.current,
+            totalChars: snippet.code.length,
+          });
+        }
       } else {
-        // Treat Enter at wrong position as an error but don't add to typed text
+        // Enter pressed at wrong position - count as error but don't advance
         setErrors(prev => prev + 1);
         totalErrorsRef.current++;
-      }
-      // Check if complete after handling Enter
-      if (currentIndex + 1 >= snippet.code.length) {
-        const now = Date.now();
-        setEndTime(now);
-        setIsComplete(true);
-
-        // Calculate final stats
-        const timeInSeconds = (now - startTime!) / 1000;
-        const correctChars = currentIndex + 1 - totalErrorsRef.current;
-        const totalTyped = typedText.length + (targetChar === '\n' ? 1 : 0);
-
-        setStats({
-          wpm: calculateWPM(correctChars, timeInSeconds),
-          accuracy: calculateAccuracy(correctChars, totalTyped),
-          time: timeInSeconds,
-          correctChars,
-          incorrectChars: totalErrorsRef.current,
-          totalChars: snippet.code.length,
-        });
       }
       return;
     }

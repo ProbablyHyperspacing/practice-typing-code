@@ -134,10 +134,11 @@
   .typing-cursor::before {
     content: '';
     @apply absolute left-0 top-0 bottom-0 w-0.5 bg-yellow-400;
-    animation: blink 1s infinite;
+    animation: blink-cursor 1s infinite;
+    z-index: 10;
   }
 
-  @keyframes blink {
+  @keyframes blink-cursor {
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
   }

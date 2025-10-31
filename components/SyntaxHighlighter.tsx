@@ -257,7 +257,7 @@ export default function SyntaxHighlighter({
               const renderChar = () => {
                 if (displayChar === '\n' && status !== 'incorrect' && showKeyboardHints) {
                   return (
-                    <span className="inline-flex items-center justify-center px-1 mx-0.5 h-5 border border-current rounded opacity-50" style={{ minWidth: '1.5rem' }}>
+                    <span className={`inline-flex items-center justify-center px-1 mx-0.5 h-5 border border-current rounded ${status === 'current' ? '' : 'opacity-50'}`} style={{ minWidth: '1.5rem' }}>
                       ↵
                     </span>
                   );
@@ -270,7 +270,7 @@ export default function SyntaxHighlighter({
                   key={`${lineIndex}-newline-${globalIndex}`}
                   ref={isCurrentChar ? currentCharRef : null}
                   className={`
-                    ${status === 'current' ? 'typing-cursor opacity-40' : ''}
+                    ${status === 'current' ? 'typing-cursor' : ''}
                     ${status === 'untyped' ? 'opacity-40' : ''}
                     ${status === 'incorrect' ? 'bg-red-500/30 !text-red-400' : ''}
                   `}
@@ -295,36 +295,48 @@ export default function SyntaxHighlighter({
                     {tokenChars.map((char: string, i: number) => {
                       const globalIndex = charIndex;
                       const nextChar = i + 1 < tokenChars.length ? tokenChars[i + 1] : undefined;
+                      const prevChar = i > 0 ? tokenChars[i - 1] : undefined;
 
-                      // Check if we're in a space-only token (any sequence of spaces in the code)
-                      const isSpaceToken = token.content.match(/^ +$/);
-
-                      // Check if we should treat this as the start of a tab (double space)
-                      const isTabStart = showKeyboardHints && isSpaceToken && char === ' ' && nextChar === ' ' && i % 2 === 0;
-                      const isTabEnd = showKeyboardHints && isSpaceToken && char === ' ' && i > 0 && tokenChars[i - 1] === ' ' && i % 2 === 1;
+                      // Check if we should treat this as the start of a tab (every pair of spaces at even positions)
+                      // For leading spaces, check if we're at an even position and followed by a space
+                      const isInLeadingSpaces = tokenIndex === 0 || line.slice(0, tokenIndex).every(t => t.content.match(/^\s*$/));
+                      const isTabStart = showKeyboardHints && char === ' ' && nextChar === ' ' && isInLeadingSpaces && i % 2 === 0;
+                      const isTabEnd = showKeyboardHints && char === ' ' && prevChar === ' ' && isInLeadingSpaces && i % 2 === 1;
 
                       if (isTabStart) {
                         // This is the first space of a tab, we'll skip it but still count it
                         charIndex++;
+                        const nextGlobalIndex = globalIndex + 1;
                         const status = getCharStatus(globalIndex);
+                        const nextStatus = getCharStatus(nextGlobalIndex);
+                        const isCurrentChar = globalIndex === currentIndex && !isComplete;
 
-                        // Only render if there's an error (not if it's current, let tab indicator handle that)
-                        if (status === 'incorrect') {
-                          const displayChar = globalIndex < typedText.length
+                        // Check if either space has an error
+                        const hasError = status === 'incorrect' || nextStatus === 'incorrect';
+
+                        if (hasError) {
+                          // Show the actual typed characters for errors
+                          const displayChar = status === 'incorrect' && globalIndex < typedText.length
                             ? typedText[globalIndex]
                             : char;
 
                           return (
                             <span
                               key={`${lineIndex}-${tokenIndex}-${i}-${globalIndex}`}
-                              className="relative inline-block bg-red-500/30 !text-red-400"
+                              ref={isCurrentChar ? currentCharRef : null}
+                              className={`
+                                relative inline-block
+                                ${status === 'incorrect' ? 'bg-red-500/30 !text-red-400' : ''}
+                                ${status === 'current' ? 'typing-cursor opacity-40' : ''}
+                                ${status === 'untyped' ? 'opacity-40' : ''}
+                              `}
                             >
                               {displayChar === ' ' ? '\u00A0' : displayChar}
                             </span>
                           );
                         }
 
-                        // Otherwise, skip rendering (will be handled by the tab indicator)
+                        // Otherwise, skip rendering (will be handled by the tab indicator on isTabEnd)
                         return null;
                       }
 
@@ -335,7 +347,7 @@ export default function SyntaxHighlighter({
                         const status = getCharStatus(globalIndex);
                         const prevStatus = getCharStatus(prevGlobalIndex);
                         const isCurrentChar = globalIndex === currentIndex && !isComplete;
-                        const wasPrevCurrent = prevGlobalIndex === currentIndex && !isComplete;
+                        const isPrevCurrent = prevGlobalIndex === currentIndex && !isComplete;
 
                         // Check if either space has an error
                         const hasError = status === 'incorrect' || prevStatus === 'incorrect';
@@ -362,19 +374,21 @@ export default function SyntaxHighlighter({
                           );
                         }
 
-                        // Render the tab indicator
-                        // Only show cursor on the first space of the tab pair
+                        // Render the tab indicator for both spaces
+                        // Show cursor if EITHER space is current
+                        const showCursor = isPrevCurrent || isCurrentChar;
+                        const bothUntyped = status === 'untyped' && prevStatus === 'untyped';
                         return (
                           <span
                             key={`${lineIndex}-${tokenIndex}-${i}-tab`}
-                            ref={wasPrevCurrent ? currentCharRef : null}
+                            ref={showCursor ? currentCharRef : null}
                             className={`
                               relative inline-block
-                              ${wasPrevCurrent ? 'typing-cursor' : ''}
-                              ${(status === 'untyped' || prevStatus === 'untyped') ? 'opacity-40' : ''}
+                              ${showCursor ? 'typing-cursor' : ''}
+                              ${bothUntyped ? 'opacity-40' : ''}
                             `}
                           >
-                            <span className="inline-flex items-center justify-center px-1 mx-0.5 h-5 border border-current rounded text-xs font-sans opacity-50" style={{ minWidth: '2.5rem' }}>
+                            <span className={`inline-flex items-center justify-center px-1 mx-0.5 h-5 border border-current rounded text-xs font-sans ${showCursor ? '' : 'opacity-50'}`} style={{ minWidth: '2.5rem' }}>
                               tab
                             </span>
                           </span>
@@ -395,7 +409,7 @@ export default function SyntaxHighlighter({
                       const renderChar = () => {
                         if (displayChar === '\t' && status !== 'incorrect') {
                           return (
-                            <span className="inline-flex items-center justify-center px-1 mx-0.5 h-5 border border-current rounded opacity-50 text-xs font-sans" style={{ minWidth: '2.5rem' }}>
+                            <span className={`inline-flex items-center justify-center px-1 mx-0.5 h-5 border border-current rounded text-xs font-sans ${status === 'current' ? '' : 'opacity-50'}`} style={{ minWidth: '2.5rem' }}>
                               tab
                             </span>
                           );
@@ -438,7 +452,7 @@ export default function SyntaxHighlighter({
                 const renderChar = () => {
                   if (status !== 'incorrect' && displayChar === '\n' && showKeyboardHints) {
                     return (
-                      <span className="inline-flex items-center justify-center px-1 mx-0.5 h-5 border border-current rounded opacity-50" style={{ minWidth: '1.5rem' }}>
+                      <span className={`inline-flex items-center justify-center px-1 mx-0.5 h-5 border border-current rounded ${status === 'current' ? '' : 'opacity-50'}`} style={{ minWidth: '1.5rem' }}>
                         ↵
                       </span>
                     );
@@ -451,7 +465,7 @@ export default function SyntaxHighlighter({
                     key={`${lineIndex}-eol-newline-${globalIndex}`}
                     ref={isCurrentChar ? currentCharRef : null}
                     className={`
-                      ${status === 'current' ? 'typing-cursor opacity-40' : ''}
+                      ${status === 'current' ? 'typing-cursor' : ''}
                       ${status === 'untyped' ? 'opacity-40' : ''}
                       ${status === 'incorrect' ? 'bg-red-500/30 text-red-400' : ''}
                     `}
