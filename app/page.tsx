@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Settings } from 'lucide-react';
+import Link from 'next/link';
 import { Languages, CodeSnippet } from '@/types';
 import { useTyping } from '@/hooks/useTyping';
 import { calculateWPM, calculateAccuracy } from '@/utils/typing';
@@ -773,7 +774,7 @@ export default function Home() {
                   </h3>
                   <div className="text-text-light-secondary dark:text-text-secondary leading-relaxed space-y-4">
                     <p>
-                      If you're rich, please consider donating so we can move out of our parents' house and get matching Lamborghinis and tell our parents we coded a B2B SaaS and made it.
+                      If you&apos;re rich, please consider donating so we can move out of our parents&apos; house and get matching Lamborghinis and tell our parents we coded a B2B SaaS and made it.
                     </p>
                     <div>
                       <p className="text-sm mb-2">Cash App:</p>
@@ -793,42 +794,42 @@ export default function Home() {
                   Blog
                 </h2>
                 <div className="grid md:grid-cols-2 gap-8 mb-8">
-                  <a href="/blog/how-to-type-code-faster" className="block group">
+                  <Link href="/blog/how-to-type-code-faster" className="block group">
                     <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary group-hover:text-accent-light-primary dark:group-hover:text-accent-primary transition-colors mb-2">
                       How to Type Code Faster: 10 Proven Techniques for Developers
                     </h3>
                     <p className="text-text-light-secondary dark:text-text-secondary text-sm">
                       Discover 10 science-backed techniques that will dramatically improve your coding speed.
                     </p>
-                  </a>
-                  <a href="/blog/why-typing-speed-matters-for-programmers" className="block group">
+                  </Link>
+                  <Link href="/blog/why-typing-speed-matters-for-programmers" className="block group">
                     <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary group-hover:text-accent-light-primary dark:group-hover:text-accent-primary transition-colors mb-2">
                       Why Typing Speed Matters for Programmers
                     </h3>
                     <p className="text-text-light-secondary dark:text-text-secondary text-sm">
                       Studies show developers who type faster write 30% more code and report higher job satisfaction.
                     </p>
-                  </a>
-                  <a href="/blog/best-mechanical-keyboards-for-programming" className="block group">
+                  </Link>
+                  <Link href="/blog/best-mechanical-keyboards-for-programming" className="block group">
                     <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary group-hover:text-accent-light-primary dark:group-hover:text-accent-primary transition-colors mb-2">
                       Best Mechanical Keyboards for Programming in 2024
                     </h3>
                     <p className="text-text-light-secondary dark:text-text-secondary text-sm">
                       A comprehensive guide to choosing the perfect mechanical keyboard for coding.
                     </p>
-                  </a>
-                  <a href="/blog/touch-typing-for-programmers" className="block group">
+                  </Link>
+                  <Link href="/blog/touch-typing-for-programmers" className="block group">
                     <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary group-hover:text-accent-light-primary dark:group-hover:text-accent-primary transition-colors mb-2">
                       Touch Typing for Programmers: A Complete Guide
                     </h3>
                     <p className="text-text-light-secondary dark:text-text-secondary text-sm">
                       Master touch typing for coding in 30 days with this comprehensive guide.
                     </p>
-                  </a>
+                  </Link>
                 </div>
-                <a href="/blog" className="inline-block text-accent-light-primary dark:text-accent-primary font-medium hover:underline">
+                <Link href="/blog" className="inline-block text-accent-light-primary dark:text-accent-primary font-medium hover:underline">
                   View all posts →
-                </a>
+                </Link>
               </div>
             </section>
 
@@ -876,7 +877,7 @@ export default function Home() {
                       Who built this?
                     </h3>
                     <p className="text-text-light-secondary dark:text-text-secondary leading-relaxed">
-                      Two brothers who wanted to help developers type code faster and move out of their parents' house.
+                      Two brothers who wanted to help developers type code faster and move out of their parents&apos; house.
                     </p>
                   </div>
                 </div>
