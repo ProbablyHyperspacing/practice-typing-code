@@ -1,4 +1,4 @@
-# Practice Typing Code
+# Code Typing Practice
 
 A minimalist, beautiful typing practice application specifically designed for developers to improve their coding speed and accuracy. Inspired by the clean aesthetics of MonkeyType and NuPhy.
 
@@ -93,7 +93,7 @@ To add new code snippets, edit the `data/codeSnippets.json` file:
 
 ## Design Philosophy
 
-Practice Typing Code follows a minimalist design philosophy inspired by:
+Code Typing Practice follows a minimalist design philosophy inspired by:
 
 - **MonkeyType**: Clean typing interface with real-time feedback
 - **NuPhy**: Minimalist aesthetics with carefully chosen accent colors

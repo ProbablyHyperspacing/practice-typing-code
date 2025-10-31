@@ -28,7 +28,7 @@ export default function Navbar({
           {/* Logo/Name */}
           <div className="flex items-center">
             <h1 className="text-xl font-display font-black tracking-tight">
-              <span className="text-gradient">Practice Typing Code</span>
+              <span className="text-gradient">Code Typing Practice</span>
             </h1>
           </div>
 
