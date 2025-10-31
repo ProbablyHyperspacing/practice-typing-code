@@ -721,16 +721,260 @@ export default function Home() {
               </div>
 
               {/* Training Progress Bar - only show in training mode with normal snippets */}
-              {/* Fixed position so multi-line snippets don't move it around */}
               {typingMode === 'training' && snippetSource === 'normal' && (
-                <div className="fixed bottom-24 left-0 right-0 flex justify-center pointer-events-none">
+                <div className="mt-64 flex justify-center pointer-events-none">
                   <TrainingProgressBar
                     needsTraining={getNeedsTraining()}
                     progress={getTrainingProgress()}
                   />
                 </div>
               )}
+
+              {/* Scroll Indicator - Show more content below */}
+              <div className="mt-32 flex flex-col items-center gap-3 opacity-40 hover:opacity-60 transition-opacity cursor-pointer" onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}>
+                <span className="text-sm text-text-light-secondary dark:text-text-secondary uppercase tracking-wider font-medium">
+                  Scroll for more
+                </span>
+                <div className="flex flex-col gap-1 animate-bounce">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-accent-light-primary dark:text-accent-primary">
+                    <path d="M12 5v14m0 0l-7-7m7 7l7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </div>
             </main>
+
+            {/* About Section */}
+            <section className="mt-16 py-24 px-4">
+              <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
+                <div>
+                  <h2 className="text-4xl md:text-6xl font-display font-black text-text-light-primary dark:text-text-primary mb-8">
+                    About
+                  </h2>
+                  <div className="space-y-6 text-lg text-text-light-secondary dark:text-text-secondary leading-relaxed">
+                    <p>
+                      My brother and I built Code Typing Practice to help developers improve their typing speed with real code patterns.
+                    </p>
+                    <p>
+                      Traditional typing tests focus on common English words, but programming requires different muscle memory. This tool provides practice with actual code snippets from JavaScript, TypeScript, Python, React, and Rust.
+                    </p>
+                    <p>
+                      The adaptive training system tracks your performance at the keystroke level and identifies which characters need more practice, helping you improve efficiently.
+                    </p>
+                    <p>
+                      This project is free. We hope it helps you type faster and write better code.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Donation Section */}
+                <div className="border-2 border-accent-light-primary dark:border-accent-primary p-8 rounded-lg">
+                  <h3 className="text-2xl md:text-3xl font-display font-black text-text-light-primary dark:text-text-primary mb-6">
+                    Support
+                  </h3>
+                  <div className="text-text-light-secondary dark:text-text-secondary leading-relaxed space-y-4">
+                    <p>
+                      If you're rich, please consider donating so we can move out of our parents' house and get matching Lamborghinis and tell our parents we coded a B2B SaaS and made it.
+                    </p>
+                    <div>
+                      <p className="text-sm mb-2">Cash App:</p>
+                      <p className="text-accent-light-primary dark:text-accent-primary font-mono text-xl font-bold">
+                        $huracanfund
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Blog Section */}
+            <section className="mt-16 py-24 px-4 border-t border-text-light-secondary dark:border-text-secondary border-opacity-10">
+              <div className="max-w-4xl mx-auto">
+                <h2 className="text-4xl md:text-6xl font-display font-black text-text-light-primary dark:text-text-primary mb-8">
+                  Blog
+                </h2>
+                <div className="grid md:grid-cols-2 gap-8 mb-8">
+                  <a href="/blog/how-to-type-code-faster" className="block group">
+                    <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary group-hover:text-accent-light-primary dark:group-hover:text-accent-primary transition-colors mb-2">
+                      How to Type Code Faster: 10 Proven Techniques for Developers
+                    </h3>
+                    <p className="text-text-light-secondary dark:text-text-secondary text-sm">
+                      Discover 10 science-backed techniques that will dramatically improve your coding speed.
+                    </p>
+                  </a>
+                  <a href="/blog/why-typing-speed-matters-for-programmers" className="block group">
+                    <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary group-hover:text-accent-light-primary dark:group-hover:text-accent-primary transition-colors mb-2">
+                      Why Typing Speed Matters for Programmers
+                    </h3>
+                    <p className="text-text-light-secondary dark:text-text-secondary text-sm">
+                      Studies show developers who type faster write 30% more code and report higher job satisfaction.
+                    </p>
+                  </a>
+                  <a href="/blog/best-mechanical-keyboards-for-programming" className="block group">
+                    <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary group-hover:text-accent-light-primary dark:group-hover:text-accent-primary transition-colors mb-2">
+                      Best Mechanical Keyboards for Programming in 2024
+                    </h3>
+                    <p className="text-text-light-secondary dark:text-text-secondary text-sm">
+                      A comprehensive guide to choosing the perfect mechanical keyboard for coding.
+                    </p>
+                  </a>
+                  <a href="/blog/touch-typing-for-programmers" className="block group">
+                    <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary group-hover:text-accent-light-primary dark:group-hover:text-accent-primary transition-colors mb-2">
+                      Touch Typing for Programmers: A Complete Guide
+                    </h3>
+                    <p className="text-text-light-secondary dark:text-text-secondary text-sm">
+                      Master touch typing for coding in 30 days with this comprehensive guide.
+                    </p>
+                  </a>
+                </div>
+                <a href="/blog" className="inline-block text-accent-light-primary dark:text-accent-primary font-medium hover:underline">
+                  View all posts →
+                </a>
+              </div>
+            </section>
+
+            {/* FAQ Section */}
+            <section className="mt-16 py-24 px-4 border-t border-text-light-secondary dark:border-text-secondary border-opacity-10">
+              <div className="max-w-3xl mx-auto">
+                <h2 className="text-4xl md:text-6xl font-display font-black text-text-light-primary dark:text-text-primary mb-12">
+                  FAQ
+                </h2>
+                <div className="space-y-8">
+                  <div>
+                    <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary mb-3">
+                      Is Code Typing Practice really free?
+                    </h3>
+                    <p className="text-text-light-secondary dark:text-text-secondary leading-relaxed">
+                      Yes, completely free forever. No hidden costs, no premium tiers, no account required.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary mb-3">
+                      What programming languages can I practice?
+                    </h3>
+                    <p className="text-text-light-secondary dark:text-text-secondary leading-relaxed">
+                      JavaScript, TypeScript, Python, React, and Rust with real code snippets from actual development patterns.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary mb-3">
+                      How does the adaptive training work?
+                    </h3>
+                    <p className="text-text-light-secondary dark:text-text-secondary leading-relaxed">
+                      The system tracks your performance at the keystroke level and identifies which characters you struggle with, then adapts to help you improve those weak areas efficiently.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary mb-3">
+                      Do I need to create an account?
+                    </h3>
+                    <p className="text-text-light-secondary dark:text-text-secondary leading-relaxed">
+                      No account needed. All your progress is saved locally in your browser using localStorage.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-display font-bold text-text-light-primary dark:text-text-primary mb-3">
+                      Who built this?
+                    </h3>
+                    <p className="text-text-light-secondary dark:text-text-secondary leading-relaxed">
+                      Two brothers who wanted to help developers type code faster and move out of their parents' house.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Schema Markup for SEO */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'WebApplication',
+                  name: 'Code Typing Practice',
+                  description: 'Free typing practice tool for programmers to improve coding speed with real code snippets',
+                  url: 'https://www.codetypingpractice.com',
+                  applicationCategory: 'EducationalApplication',
+                  operatingSystem: 'Any',
+                  offers: {
+                    '@type': 'Offer',
+                    price: '0',
+                    priceCurrency: 'USD',
+                  },
+                  featureList: [
+                    'JavaScript typing practice',
+                    'TypeScript typing practice',
+                    'Python typing practice',
+                    'React typing practice',
+                    'Rust typing practice',
+                    'Adaptive training system',
+                    'Keystroke-level tracking',
+                  ],
+                }),
+              }}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'Organization',
+                  name: 'Code Typing Practice',
+                  url: 'https://www.codetypingpractice.com',
+                  description: 'Built by developers, for developers who want to improve their coding typing speed',
+                }),
+              }}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'FAQPage',
+                  mainEntity: [
+                    {
+                      '@type': 'Question',
+                      name: 'Is Code Typing Practice really free?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'Yes, completely free forever. No hidden costs, no premium tiers, no account required.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'What programming languages can I practice?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'JavaScript, TypeScript, Python, React, and Rust with real code snippets from actual development patterns.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'How does the adaptive training work?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'The system tracks your performance at the keystroke level and identifies which characters you struggle with, then adapts to help you improve those weak areas efficiently.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'Do I need to create an account?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'No account needed. All your progress is saved locally in your browser using localStorage.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'Who built this?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'Two brothers who wanted to help developers type code faster.',
+                      },
+                    },
+                  ],
+                }),
+              }}
+            />
 
           </motion.div>
         )}
